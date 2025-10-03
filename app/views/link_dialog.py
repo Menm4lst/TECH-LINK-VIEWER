@@ -10,7 +10,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 from ..utils.validators import validar_url, validar_titulo, validar_categoria, limpiar_url
-from ..utils.estilos import aplicar_tema_oscuro
+from ..theme.apply import apply_dark_theme
+from ..theme.fonts import Fonts
 
 
 class DialogoEnlace(QDialog):
@@ -44,13 +45,13 @@ class DialogoEnlace(QDialog):
         self.setMinimumSize(500, 400)
         self.setMaximumSize(700, 600)
         
-        # Configurar fuente
-        fuente = QFont("Segoe UI", 10)
+        # Configurar fuente del nuevo sistema de tema
+        fuente = Fonts.get_monospace_font(size=10)
         self.setFont(fuente)
         
-        # Aplicar tema oscuro
+        # Aplicar nuevo tema oscuro
         from PyQt6.QtWidgets import QApplication
-        aplicar_tema_oscuro(QApplication.instance())
+        apply_dark_theme(QApplication.instance())
     
     def _crear_interfaz(self) -> None:
         layout_principal = QVBoxLayout(self)

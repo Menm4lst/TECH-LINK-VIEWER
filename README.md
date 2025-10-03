@@ -12,6 +12,8 @@
 - **💾 Persistencia JSON**: Almacenamiento local con funciones de importar/exportar
 - **⌨️ Atajos de Teclado**: Navegación completa sin mouse
 - **🛡️ Validación Robusta**: Control de URLs duplicadas y validación de datos
+- **📝 Sistema de Notas Integrado**: Toma, organiza y gestiona notas con auto-guardado
+- **🗂️ Interface con Pestañas**: Navegación entre Enlaces y Notas
 
 ## 🚀 Instalación y Ejecución
 
@@ -61,6 +63,35 @@ python generar_demo.py
 
 Esto agregará enlaces tecnológicos organizados en múltiples categorías.
 
+## 📝 Sistema de Notas Integrado
+
+### ¿Qué es?
+Una funcionalidad completamente nueva que permite tomar, organizar y gestionar notas directamente en la aplicación, eliminando la necesidad de usar archivos .txt externos.
+
+### Características del Sistema de Notas
+- **📋 Interface con pestañas**: Navega entre Enlaces y Notas
+- **💾 Auto-guardado inteligente**: Guardado automático cada 3 segundos
+- **🔍 Búsqueda en tiempo real**: Busca en títulos y contenido de todas las notas
+- **✏️ Editor profesional**: Fuente monospace optimizada para código y texto
+- **📊 Gestión completa**: Crear, editar, duplicar y eliminar notas
+- **🗂️ Almacenamiento JSON**: Persistencia local con backup automático
+
+### Atajos Específicos de Notas
+- **Ctrl+1**: Cambiar a pestaña Enlaces
+- **Ctrl+2**: Cambiar a pestaña Notas  
+- **Ctrl+Shift+N**: Nueva nota (desde cualquier pestaña)
+- **Ctrl+S**: Guardar nota actual
+- **Del**: Eliminar nota seleccionada
+
+### ¿Por qué usar el Sistema de Notas?
+✅ **Todo centralizado** en una aplicación  
+✅ **Búsqueda instantánea** en todas las notas  
+✅ **Auto-guardado inteligente** sin pérdidas  
+✅ **Interface profesional** con tema oscuro  
+✅ **Integración completa** con gestión de enlaces  
+
+👉 **[Ver documentación completa del sistema de notas →](NOTAS.md)**
+
 ## 🎨 Interfaz y Diseño
 
 ### Tema Oscuro Profesional
@@ -95,15 +126,39 @@ TLV_4.0/
 │   │   └── search.py        # Motor de búsqueda fuzzy
 │   ├── views/
 │   │   ├── __init__.py
-│   │   ├── main_window.py   # Ventana principal
+│   │   ├── main_window.py   # Ventana principal (con tabs)
 │   │   └── link_dialog.py   # Diálogo de edición
+│   ├── widgets/
+│   │   ├── __init__.py
+│   │   ├── titlebar.py      # Header con efecto typewriter
+│   │   ├── about_dialog.py  # Diálogo "Acerca de"
+│   │   └── notes_widget.py  # Sistema de notas completo
+│   ├── theme/
+│   │   ├── __init__.py
+│   │   ├── colors.py        # Paleta de colores terminal
+│   │   ├── fonts.py         # Configuración de fuentes
+│   │   ├── icons.py         # Iconos SVG
+│   │   ├── dark.qss         # Estilos CSS de Qt
+│   │   └── apply.py         # Aplicador de tema
+│   ├── delegates/
+│   │   ├── __init__.py
+│   │   └── tag_delegate.py  # Renderizado de tags
 │   └── utils/
 │       ├── __init__.py
 │       ├── io.py           # Utilidades de E/S
 │       ├── validators.py   # Validadores
 │       └── time.py         # Utilidades de tiempo
 ├── data/
-│   └── links.json          # Base de datos JSON
+│   ├── links.json          # Base de datos de enlaces
+│   └── notas.json          # Base de datos de notas
+├── docs/
+│   ├── COMPILACION.md      # Guía de compilación
+│   ├── INSTALL.md          # Guía de instalación
+│   └── NOTAS.md            # Documentación del sistema de notas
+├── scripts/
+│   ├── compilar.bat        # Script de compilación Windows
+│   ├── compilar.sh         # Script de compilación Linux/Mac
+│   └── instalar.bat        # Script de instalación Windows
 ├── requirements.txt
 └── README.md
 ```
@@ -112,6 +167,13 @@ TLV_4.0/
 
 ### Atajos de teclado
 
+#### Navegación General
+- **Ctrl+1**: Cambiar a pestaña Enlaces
+- **Ctrl+2**: Cambiar a pestaña Notas
+- **F1**: Mostrar ayuda
+- **F5**: Refrescar datos
+
+#### Gestión de Enlaces
 - **Ctrl+N**: Nuevo enlace
 - **Ctrl+E**: Editar enlace seleccionado
 - **Del**: Eliminar enlace seleccionado
@@ -119,6 +181,12 @@ TLV_4.0/
 - **Ctrl+F**: Enfocar barra de búsqueda
 - **Enter**: Abrir enlace seleccionado
 - **Esc**: Limpiar búsqueda
+
+#### Sistema de Notas
+- **Ctrl+Shift+N**: Nueva nota (desde cualquier pestaña)
+- **Ctrl+N**: Nueva nota (en pestaña de notas)
+- **Ctrl+S**: Guardar nota actual
+- **Del**: Eliminar nota (con confirmación)
 
 ### Funcionalidades
 

@@ -5,5 +5,7 @@ Widgets personalizados para TECH LINK VIEWER
 """
 
 from .titlebar import TitleBar
+from .about_dialog import AboutDialog
+from .notes_widget import NotesWidget
 
-__all__ = ['TitleBar']
+__all__ = ['TitleBar', 'AboutDialog', 'NotesWidget']

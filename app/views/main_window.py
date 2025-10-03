@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QLineEdit, QPushButton, QListWidget, QTableView,
     QSplitter, QLabel, QMessageBox, QFileDialog,
     QStatusBar, QMenuBar, QMenu, QFrame, QApplication,
-    QToolBar, QToolButton
+    QToolBar, QToolButton, QTabWidget
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QUrl
 from PyQt6.QtGui import QKeySequence, QShortcut, QFont, QAction, QDesktopServices
@@ -21,7 +21,7 @@ from ..models.search import (
 )
 from ..utils.io import abrir_url
 from ..theme import Colors, Fonts, get_icon
-from ..widgets import TitleBar
+from ..widgets import TitleBar, NotesWidget
 from ..widgets.about_dialog import AboutDialog
 from ..delegates import TagDelegate
 from .link_dialog import DialogoEnlace
@@ -271,7 +271,55 @@ class VentanaPrincipal(QMainWindow):
         self.addToolBar(toolbar)
     
     def _crear_area_principal(self, layout_padre: QVBoxLayout) -> None:
-        """Crea el área principal con el splitter."""
+        """Crea el área principal con pestañas."""
+        # Crear widget de pestañas
+        self.tab_widget = QTabWidget()
+        self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
+        
+        # Aplicar estilos a las pestañas
+        self.tab_widget.setStyleSheet(f"""
+            QTabWidget::pane {{
+                border: 1px solid {Colors.FG_DIM};
+                background-color: {Colors.BG0};
+            }}
+            
+            QTabBar::tab {{
+                background-color: {Colors.BG1};
+                color: {Colors.FG};
+                padding: 8px 16px;
+                margin-right: 2px;
+                border: 1px solid {Colors.FG_DIM};
+                border-bottom: none;
+                font-family: 'Consolas', 'Monaco', monospace;
+                font-weight: bold;
+            }}
+            
+            QTabBar::tab:selected {{
+                background-color: {Colors.BG0};
+                color: {Colors.ACCENT_CYAN};
+                border-color: {Colors.ACCENT_CYAN};
+            }}
+            
+            QTabBar::tab:hover {{
+                background-color: {Colors.BG2};
+                color: {Colors.ACCENT_NEO};
+            }}
+        """)
+        
+        # Crear pestaña de Enlaces
+        self._crear_tab_enlaces()
+        
+        # Crear pestaña de Notas
+        self._crear_tab_notas()
+        
+        layout_padre.addWidget(self.tab_widget)
+    
+    def _crear_tab_enlaces(self) -> None:
+        """Crea la pestaña de gestión de enlaces"""
+        enlaces_widget = QWidget()
+        layout = QHBoxLayout(enlaces_widget)
+        layout.setContentsMargins(4, 4, 4, 4)
+        
         splitter = QSplitter(Qt.Orientation.Horizontal)
         
         # Panel izquierdo - Categorías
@@ -285,7 +333,22 @@ class VentanaPrincipal(QMainWindow):
         splitter.setCollapsible(0, False)
         splitter.setCollapsible(1, False)
         
-        layout_padre.addWidget(splitter)
+        layout.addWidget(splitter)
+        
+        # Añadir pestaña
+        self.tab_widget.addTab(enlaces_widget, "🔗 Enlaces")
+    
+    def _crear_tab_notas(self) -> None:
+        """Crea la pestaña de notas"""
+        # Crear widget de notas
+        self.notes_widget = NotesWidget()
+        
+        # Conectar señales
+        self.notes_widget.nota_guardada.connect(self._nota_guardada)
+        self.notes_widget.nota_eliminada.connect(self._nota_eliminada)
+        
+        # Añadir pestaña
+        self.tab_widget.addTab(self.notes_widget, "📝 Notas")
     
     def _crear_panel_categorias(self, splitter: QSplitter) -> None:
         """Crea el panel de categorías con estilo terminal."""
@@ -427,6 +490,17 @@ class VentanaPrincipal(QMainWindow):
         
         shortcut_ayuda = QShortcut(QKeySequence("F1"), self)
         shortcut_ayuda.activated.connect(self._mostrar_ayuda)
+        
+        # Atajos para cambiar pestañas
+        shortcut_tab_enlaces = QShortcut(QKeySequence("Ctrl+1"), self)
+        shortcut_tab_enlaces.activated.connect(lambda: self.tab_widget.setCurrentIndex(0))
+        
+        shortcut_tab_notas = QShortcut(QKeySequence("Ctrl+2"), self)
+        shortcut_tab_notas.activated.connect(lambda: self.tab_widget.setCurrentIndex(1))
+        
+        # Atajo para nueva nota (solo en pestaña de notas)
+        shortcut_nueva_nota = QShortcut(QKeySequence("Ctrl+Shift+N"), self)
+        shortcut_nueva_nota.activated.connect(self._nueva_nota_global)
         
         # Atajo para limpiar búsqueda
         shortcut_escape = QShortcut(QKeySequence("Escape"), self)
@@ -900,6 +974,11 @@ class VentanaPrincipal(QMainWindow):
         ayuda_texto = """
         📋 AYUDA - TECH LINK VIEWER 4.0
         
+        🏷️ PESTAÑAS:
+        • Ctrl+1: Cambiar a pestaña Enlaces
+        • Ctrl+2: Cambiar a pestaña Notas
+        
+        🔗 PESTAÑA ENLACES:
         🔍 BÚSQUEDA:
         • Escribe en el campo de búsqueda para filtrar enlaces
         • Búsqueda por título, URL, descripción y tags
@@ -915,6 +994,19 @@ class VentanaPrincipal(QMainWindow):
         • Editar: Ctrl+E (enlace seleccionado)
         • Eliminar: Del (enlace seleccionado)
         
+        📝 PESTAÑA NOTAS:
+        ✍️ GESTIÓN DE NOTAS:
+        • Nueva nota: Ctrl+Shift+N
+        • Auto-guardado automático cada 3 segundos
+        • Búsqueda instantánea en notas
+        • Clic derecho para opciones (duplicar, eliminar)
+        
+        💡 FUNCIONES DE NOTAS:
+        • Títulos personalizables
+        • Editor de texto enriquecido
+        • Estadísticas automáticas
+        • Fechas de creación y modificación
+        
         📊 IMPORTAR/EXPORTAR:
         • Importar: Cargar enlaces desde archivo JSON
         • Exportar: Guardar enlaces a archivo JSON
@@ -923,13 +1015,17 @@ class VentanaPrincipal(QMainWindow):
         • Ctrl+N: Nuevo enlace
         • Ctrl+E: Editar enlace
         • Del: Eliminar enlace
+        • Ctrl+Shift+N: Nueva nota
+        • Ctrl+S: Guardar (enlaces/notas)
         • F5: Refrescar datos
         • F1: Esta ayuda
+        • Ctrl+1/2: Cambiar pestañas
         
         🎨 INTERFAZ:
         • Tema oscuro terminal profesional
         • Iconos SVG con efectos hover
         • Header con efecto typewriter animado
+        • Sistema de pestañas integrado
         """
         
         QMessageBox.information(self, "Ayuda - TLV 4.0", ayuda_texto)
@@ -938,6 +1034,26 @@ class VentanaPrincipal(QMainWindow):
         """Muestra el diálogo Acerca de."""
         dialogo = AboutDialog(self)
         dialogo.exec()
+    
+    def _nota_guardada(self, nota_id: str) -> None:
+        """Maneja cuando se guarda una nota."""
+        # Mostrar mensaje en barra de estado
+        self.statusBar().showMessage("📝 Nota guardada correctamente", 2000)
+        logger.info(f"Nota guardada: {nota_id}")
+    
+    def _nota_eliminada(self, titulo: str) -> None:
+        """Maneja cuando se elimina una nota."""
+        # Mostrar mensaje en barra de estado
+        self.statusBar().showMessage(f"🗑️ Nota eliminada: {titulo}", 3000)
+        logger.info(f"Nota eliminada: {titulo}")
+    
+    def _nueva_nota_global(self) -> None:
+        """Crea una nueva nota desde cualquier pestaña."""
+        # Cambiar a la pestaña de notas
+        self.tab_widget.setCurrentIndex(1)
+        # Crear nueva nota
+        if hasattr(self, 'notes_widget'):
+            self.notes_widget._nueva_nota()
     
     def closeEvent(self, event) -> None:
         """Maneja el cierre de la aplicación."""
