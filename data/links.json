@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "categorias": [
+    "Cloud",
+    "Desarrollo",
+    "DevOps",
+    "Educación",
+    "Noticias",
+    "Personal",
+    "Trabajo"
+  ],
+  "links": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "titulo": "Google",
+      "url": "https://www.google.com",
+      "categoria": "Personal",
+      "tags": [
+        "google",
+        "buscador"
+      ],
+      "creado_en": "2025-10-03T12:00:00",
+      "actualizado_en": "2025-10-03T12:00:00"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "titulo": "Trabajo",
+      "url": "https://www.trabajo.com",
+      "categoria": "Trabajo",
+      "tags": [
+        "trabajo"
+      ],
+      "creado_en": "2025-10-03T12:00:00",
+      "actualizado_en": "2025-10-03T12:00:00"
+    },
+    {
+      "id": "59c5f441-b2b0-4cc9-a428-dda6015c98b0",
+      "titulo": "GitHub - Desarrollo de Software",
+      "url": "https://github.com",
+      "categoria": "Desarrollo",
+      "tags": [
+        "git",
+        "código",
+        "repositorio",
+        "desarrollo"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "09770fea-6a1b-41da-84e5-ad8b809823c2",
+      "titulo": "Stack Overflow - Programación",
+      "url": "https://stackoverflow.com",
+      "categoria": "Desarrollo",
+      "tags": [
+        "programación",
+        "ayuda",
+        "comunidad",
+        "código"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "4b85d70c-1297-4e23-8425-12762d1b3464",
+      "titulo": "YouTube - Videos Técnicos",
+      "url": "https://youtube.com",
+      "categoria": "Educación",
+      "tags": [
+        "videos",
+        "tutoriales",
+        "educación",
+        "tecnología"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "9c2dfa03-7f66-4135-9611-409af0c1ff51",
+      "titulo": "LinkedIn - Red Profesional",
+      "url": "https://linkedin.com",
+      "categoria": "Trabajo",
+      "tags": [
+        "networking",
+        "profesional",
+        "empleo",
+        "conexiones"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "2091e962-c166-41c6-9c7c-78517b487f33",
+      "titulo": "Python.org - Documentación",
+      "url": "https://python.org",
+      "categoria": "Desarrollo",
+      "tags": [
+        "python",
+        "documentación",
+        "programación",
+        "lenguaje"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "842552ea-8754-494f-ac58-7d308370d629",
+      "titulo": "MDN Web Docs - HTML/CSS/JS",
+      "url": "https://developer.mozilla.org",
+      "categoria": "Desarrollo",
+      "tags": [
+        "web",
+        "html",
+        "css",
+        "javascript",
+        "documentación"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "7dc131ba-ea12-40f2-b424-d96899c5a53c",
+      "titulo": "AWS Console - Cloud Computing",
+      "url": "https://aws.amazon.com/console",
+      "categoria": "Cloud",
+      "tags": [
+        "aws",
+        "cloud",
+        "servidor",
+        "infraestructura"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "dfd2a166-b090-45f4-b052-fb5932078127",
+      "titulo": "Docker Hub - Contenedores",
+      "url": "https://hub.docker.com",
+      "categoria": "DevOps",
+      "tags": [
+        "docker",
+        "contenedores",
+        "devops",
+        "deployment"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "12970c39-8cc6-47e4-8705-6d1ae3381f60",
+      "titulo": "Reddit - Tecnología",
+      "url": "https://reddit.com/r/technology",
+      "categoria": "Noticias",
+      "tags": [
+        "noticias",
+        "tecnología",
+        "comunidad",
+        "discusión"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    },
+    {
+      "id": "cbc1e7a9-d601-4b40-8a17-7f70b82f9193",
+      "titulo": "Hacker News - Tech News",
+      "url": "https://news.ycombinator.com",
+      "categoria": "Noticias",
+      "tags": [
+        "noticias",
+        "startup",
+        "tecnología",
+        "emprendimiento"
+      ],
+      "creado_en": "2025-10-03T11:23:23.564361",
+      "actualizado_en": "2025-10-03T11:23:23.564361"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+2025-10-03 11:15:07,762 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 11:15:07,763 - app.ui_main - ERROR - Error fatal: type object 'ApplicationAttribute' has no attribute 'AA_EnableHighDpiScaling'
+2025-10-03 11:15:39,201 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 11:15:39,228 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:15:39,230 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:15:39,230 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 11:15:40,853 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 11:15:40,964 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 11:16:25,621 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:16:25,624 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 11:22:20,914 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 11:22:20,937 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:22:20,939 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:22:20,939 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 11:22:21,627 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 11:22:21,718 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 11:23:19,339 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:23:19,340 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 11:49:43,133 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 11:49:43,168 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:49:43,171 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:49:43,171 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 11:49:43,173 - app.ui_main - ERROR - Error fatal: name 'layout_principal' is not defined
+2025-10-03 11:50:27,570 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 11:50:27,603 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:50:27,605 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 11:50:27,605 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 11:50:28,317 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 11:50:28,463 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:28:43,766 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:28:43,817 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:28:43,820 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:28:43,820 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:28:44,825 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:28:44,975 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:30:46,654 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:30:46,706 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:30:46,709 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:30:46,710 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:30:47,486 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:30:47,649 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:35:20,831 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:35:20,927 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:35:20,937 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:35:20,938 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:35:21,826 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:35:21,968 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:35:44,148 - app.utils.io - INFO - URL abierta correctamente: https://linkedin.com
+2025-10-03 12:36:29,774 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:36:29,776 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 12:40:47,478 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:40:47,514 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:40:47,516 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:40:47,517 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:40:48,385 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:40:48,520 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:42:10,634 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:42:10,636 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 12:44:56,852 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:44:56,884 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:44:56,886 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:44:56,887 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:44:57,569 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:44:57,712 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:45:44,825 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:45:44,829 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 12:49:48,579 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:49:48,615 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:49:48,618 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:49:48,618 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:49:49,471 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:49:49,696 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 12:52:26,703 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:52:26,721 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-03 12:54:18,786 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-03 12:54:18,821 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:54:18,824 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 12:54:18,825 - app.utils.io - INFO - Estructura JSON válida
+2025-10-03 12:54:19,486 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-03 12:54:19,654 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-03 13:56:01,483 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-03 13:56:01,486 - app.views.main_window - INFO - Aplicación cerrada correctamente
