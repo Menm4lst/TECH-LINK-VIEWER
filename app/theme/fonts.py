@@ -65,6 +65,11 @@ class Fonts:
         return Fonts.get_monospace_font(Fonts.SIZE_TITLE, bold=True)
     
     @staticmethod
+    def get_subtitle_font() -> QFont:
+        """Fuente para subtítulos"""
+        return Fonts.get_monospace_font(Fonts.SIZE_MEDIUM, bold=True)
+    
+    @staticmethod
     def get_small_font() -> QFont:
         """Fuente pequeña para subtítulos"""
         return Fonts.get_monospace_font(Fonts.SIZE_SMALL)

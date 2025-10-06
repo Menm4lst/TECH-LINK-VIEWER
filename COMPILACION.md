@@ -4,6 +4,28 @@
 
 Esta guía te ayudará a compilar **TECH LINK VIEWER 4.0** desde el código fuente hasta obtener un ejecutable distribuible.
 
+**🎉 ÚLTIMA COMPILACIÓN EXITOSA: TLV 4.0 con Grupos SN y Guía Paso a Paso**
+
+## ✨ Novedades en la Última Versión
+
+### 📋 **Nueva Sección: Grupos de Service Now**
+- Sistema completo de gestión de grupos SN
+- Búsqueda inteligente por nombre y responsabilidades  
+- Formularios de creación y edición completos
+- Vista detallada con información profesional
+
+### 🎓 **Sistema de Guía Integrada**
+- F1: Ayuda rápida con atajos
+- F2: Guía paso a paso completa
+- Botón dedicado en toolbar
+- Contenido extenso y casos de uso profesionales
+
+### 🎨 **Mejoras de Interfaz**
+- Layout optimizado en sección Grupos SN
+- Botones minimalistas con tooltips
+- Espaciado mejorado para mejor aprovechamiento
+- Navegación fluida entre pestañas
+
 ## 🎯 Prerrequisitos
 
 ### Software Requerido

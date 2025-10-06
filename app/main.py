@@ -5,7 +5,17 @@ Este módulo inicializa y ejecuta la aplicación de gestión de enlaces.
 Puede ejecutarse como módulo principal o importado desde otros scripts.
 """
 import sys
-from .ui_main import ejecutar_aplicacion
+import os
+
+# Agregar el directorio padre al path para importaciones absolutas
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+try:
+    # Intentar importación relativa (para ejecución como módulo)
+    from .ui_main import ejecutar_aplicacion
+except ImportError:
+    # Importación absoluta (para PyInstaller y ejecución directa)
+    from ui_main import ejecutar_aplicacion
 
 
 def main() -> int:

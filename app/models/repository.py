@@ -44,9 +44,25 @@ class RepositorioEnlaces:
         if datos is None or not validar_estructura_json(datos):
             logger.warning("Datos no válidos o no existen, creando datos por defecto")
             datos = self._crear_datos_por_defecto()
-            self.guardar()
+            # Guardar los datos por defecto directamente sin usar self.guardar()
+            guardar_json(datos, self.ruta_archivo)
         
         return datos
+    
+    def cargar(self) -> bool:
+        """
+        Recarga los datos desde el archivo.
+        
+        Returns:
+            True si la carga fue exitosa, False en caso contrario
+        """
+        try:
+            self._datos = self._cargar_o_crear_datos()
+            logger.info("Datos recargados desde archivo")
+            return True
+        except Exception as e:
+            logger.error(f"Error al recargar datos: {e}")
+            return False
     
     def _crear_datos_por_defecto(self) -> Dict[str, Any]:
         """

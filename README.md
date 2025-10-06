@@ -1,13 +1,17 @@
-# 🔗 TECH LINK VIEWER
+# 🔗 TECH LINK VIEWER 4.0
 
-**Una aplicación de escritorio moderna para gestionar, organizar y buscar enlaces web con estilo.**
+**Una aplicación de escritorio moderna para gestionar enlaces web, notas personales y grupos de Service Now con estilo profesional.**
 
 ## ✨ Características Principales
 
 - **🎨 Tema Oscuro Profesional**: Interfaz moderna optimizada para largas sesiones de trabajo
-- **🔍 Búsqueda Inteligente**: Búsqueda case-insensitive con soporte para fuzzy matching
+- **🔍 Búsqueda Inteligente**: Búsqueda case-insensitive con soporte para fuzzy matching en todas las secciones
 - **📁 Gestión de Categorías**: Panel lateral intuitivo para organizar enlaces
 - **🏷️ Sistema de Tags**: Etiquetado flexible con filtros de un clic
+- **📝 Editor de Notas**: Sistema completo de notas con auto-guardado y búsqueda
+- **📋 Grupos Service Now**: Gestión integral de grupos SN con información detallada
+- **⌨️ Atajos de Teclado**: Flujo de trabajo optimizado con shortcuts profesionales
+- **🚀 Guía Paso a Paso**: Sistema de ayuda integrado con F1 (ayuda rápida) y F2 (guía completa)
 - **⚡ Apertura Rápida**: Doble clic o Enter para abrir enlaces instantáneamente
 - **💾 Persistencia JSON**: Almacenamiento local con funciones de importar/exportar
 - **⌨️ Atajos de Teclado**: Navegación completa sin mouse

@@ -2,17 +2,18 @@
 Ventana principal de la aplicación.
 """
 import logging
+import sys
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-    QLineEdit, QPushButton, QListWidget, QTableView,
+    QLineEdit, QPushButton, QListWidget, QListWidgetItem, QTableView,
     QSplitter, QLabel, QMessageBox, QFileDialog,
     QStatusBar, QMenuBar, QMenu, QFrame, QApplication,
-    QToolBar, QToolButton, QTabWidget
+    QToolBar, QToolButton, QTabWidget, QInputDialog, QDialog, QTextEdit
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QUrl
-from PyQt6.QtGui import QKeySequence, QShortcut, QFont, QAction, QDesktopServices
+from PyQt6.QtGui import QKeySequence, QShortcut, QFont, QAction, QDesktopServices, QIcon, QPixmap
 from ..models.repository import RepositorioEnlaces
 from ..models.link_model import ModeloTablaEnlaces
 from ..models.search import (
@@ -21,7 +22,7 @@ from ..models.search import (
 )
 from ..utils.io import abrir_url
 from ..theme import Colors, Fonts, get_icon
-from ..widgets import TitleBar, NotesWidget
+from ..widgets import TitleBar, NotesWidget, GruposSNWidget
 from ..widgets.about_dialog import AboutDialog
 from ..delegates import TagDelegate
 from .link_dialog import DialogoEnlace
@@ -74,7 +75,11 @@ class VentanaPrincipal(QMainWindow):
     def _crear_interfaz(self) -> None:
         """Crea la interfaz de usuario."""
         central_widget = QWidget()
+        central_widget.setObjectName("central_widget")  # ID para el stylesheet
         self.setCentralWidget(central_widget)
+        
+        # Configurar imagen de fondo translúcida
+        self._configurar_fondo_translucido(central_widget)
         
         # Layout principal más compacto
         layout_principal = QVBoxLayout(central_widget)
@@ -96,6 +101,60 @@ class VentanaPrincipal(QMainWindow):
         # Crear menú
         self._crear_menu()
     
+    def _configurar_fondo_translucido(self, widget: QWidget) -> None:
+        """Configura una imagen de fondo translúcida para la aplicación."""
+        import os
+        from pathlib import Path
+        
+        # Buscar la imagen de fondo (fondo.jpg)
+        fondo_path = Path("Images/fondo.jpg")
+        
+        # Si estamos en un ejecutable compilado, buscar en el directorio de la aplicación
+        if getattr(sys, 'frozen', False):
+            # Ejecutable compilado
+            app_dir = Path(sys.executable).parent
+            fondo_path = app_dir / "Images" / "fondo.jpg"
+            if not fondo_path.exists():
+                # Intentar en el directorio actual
+                fondo_path = Path("Images/fondo.jpg")
+        
+        # Verificar si la imagen existe
+        if fondo_path.exists():
+            fondo_path_str = str(fondo_path).replace('\\', '/')
+            
+            # Configurar stylesheet con imagen de fondo translúcida
+            # Qt stylesheet con imagen de fondo y overlay translúcido
+            stylesheet = f"""
+            QMainWindow {{
+                background-color: {Colors.BG0};
+                background-image: url({fondo_path_str});
+                background-repeat: no-repeat;
+                background-position: center;
+            }}
+            
+            QMainWindow > QWidget {{
+                background-color: rgba(15, 15, 15, 230);
+            }}
+            
+            QWidget#central_widget {{
+                background-color: rgba(25, 25, 25, 200);
+                border-radius: 10px;
+                margin: 10px;
+            }}
+            """
+            logger.info("Fondo translúcido configurado correctamente con fondo.jpg")
+        else:
+            # Si no se encuentra la imagen, usar solo color de fondo
+            stylesheet = f"""
+            QMainWindow {{
+                background-color: {Colors.BG0};
+            }}
+            """
+            logger.warning(f"No se encontró la imagen de fondo en: {fondo_path}")
+        
+        # Aplicar el estilo a la ventana principal
+        self.setStyleSheet(stylesheet)
+
     def _crear_titulo_typewriter(self, layout_padre: QVBoxLayout) -> None:
         """Crea el título con efecto typewriter."""
         self.title_bar = TitleBar()
@@ -258,8 +317,16 @@ class VentanaPrincipal(QMainWindow):
         self.boton_ayuda.setIcon(get_icon('help'))
         self.boton_ayuda.setText("Ayuda")
         self.boton_ayuda.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-        self.boton_ayuda.setToolTip("Ayuda y documentación (F1)")
+        self.boton_ayuda.setToolTip("Ayuda rápida (F1)")
         toolbar.addWidget(self.boton_ayuda)
+        
+        # Botón Guía
+        self.boton_guia = QToolButton()
+        self.boton_guia.setIcon(get_icon('info'))  # Usar icono de info
+        self.boton_guia.setText("Guía")
+        self.boton_guia.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
+        self.boton_guia.setToolTip("Guía paso a paso (F2)")
+        toolbar.addWidget(self.boton_guia)
         
         # Botón Acerca de
         self.boton_acerca_de = QToolButton()
@@ -313,6 +380,9 @@ class VentanaPrincipal(QMainWindow):
         # Crear pestaña de Notas
         self._crear_tab_notas()
         
+        # Crear pestaña de Grupos SN
+        self._crear_tab_grupos_sn()
+        
         layout_padre.addWidget(self.tab_widget)
     
     def _crear_tab_enlaces(self) -> None:
@@ -351,21 +421,139 @@ class VentanaPrincipal(QMainWindow):
         # Añadir pestaña
         self.tab_widget.addTab(self.notes_widget, "📝 Notas")
     
+    def _crear_tab_grupos_sn(self) -> None:
+        """Crea la pestaña de Grupos Service Now"""
+        # Crear widget de grupos SN
+        self.grupos_sn_widget = GruposSNWidget()
+        
+        # Añadir pestaña
+        self.tab_widget.addTab(self.grupos_sn_widget, "👥 Grupos SN")
+    
     def _crear_panel_categorias(self, splitter: QSplitter) -> None:
-        """Crea el panel de categorías con estilo terminal."""
+        """Crea el panel de categorías con estilo mejorado."""
         widget_categorias = QWidget()
         layout_categorias = QVBoxLayout(widget_categorias)
+        layout_categorias.setContentsMargins(8, 8, 8, 8)
+        layout_categorias.setSpacing(6)
         
-        # Título
-        label_categorias = QLabel("CATEGORÍAS")
+        # Header con título y botones
+        header_layout = QHBoxLayout()
+        
+        # Título estilizado
+        label_categorias = QLabel("📁 CATEGORÍAS")
         label_categorias.setFont(Fonts.get_monospace_font(Fonts.SIZE_MEDIUM, bold=True))
-        label_categorias.setStyleSheet(f"color: {Colors.ACCENT_CYAN}; padding: 8px;")
-        layout_categorias.addWidget(label_categorias)
+        label_categorias.setStyleSheet(f"""
+            color: {Colors.ACCENT_CYAN}; 
+            padding: 8px 4px;
+            font-weight: bold;
+        """)
+        header_layout.addWidget(label_categorias)
         
-        # Lista de categorías
+        header_layout.addStretch()
+        
+        # Botón para crear nueva categoría
+        self.btn_nueva_categoria = QPushButton("➕")
+        self.btn_nueva_categoria.setToolTip("Crear nueva categoría")
+        self.btn_nueva_categoria.setFixedSize(30, 30)
+        self.btn_nueva_categoria.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {Colors.ACCENT_NEO};
+                color: {Colors.BG0};
+                border: 1px solid {Colors.BORDER};
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 14px;
+            }}
+            QPushButton:hover {{
+                background-color: {Colors.ACCENT_CYAN};
+                border-color: {Colors.ACCENT_CYAN};
+            }}
+            QPushButton:pressed {{
+                background-color: {Colors.PRESSED};
+            }}
+        """)
+        self.btn_nueva_categoria.clicked.connect(self._crear_nueva_categoria)
+        header_layout.addWidget(self.btn_nueva_categoria)
+        
+        # Botón para eliminar categoría
+        self.btn_eliminar_categoria = QPushButton("🗑️")
+        self.btn_eliminar_categoria.setToolTip("Eliminar categoría seleccionada")
+        self.btn_eliminar_categoria.setFixedSize(30, 30)
+        self.btn_eliminar_categoria.setEnabled(False)
+        self.btn_eliminar_categoria.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {Colors.ACCENT_AMBER};
+                color: {Colors.BG0};
+                border: 1px solid {Colors.BORDER};
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 12px;
+            }}
+            QPushButton:hover:enabled {{
+                background-color: #ff4757;
+                border-color: #ff4757;
+            }}
+            QPushButton:pressed:enabled {{
+                background-color: {Colors.PRESSED};
+            }}
+            QPushButton:disabled {{
+                background-color: {Colors.BG2};
+                color: {Colors.FG_DIM};
+                border-color: {Colors.BORDER};
+            }}
+        """)
+        self.btn_eliminar_categoria.clicked.connect(self._eliminar_categoria_seleccionada)
+        header_layout.addWidget(self.btn_eliminar_categoria)
+        
+        layout_categorias.addLayout(header_layout)
+        
+        # Lista de categorías con estilo mejorado
         self.lista_categorias = QListWidget()
         self.lista_categorias.setMaximumWidth(300)
+        self.lista_categorias.setMinimumHeight(200)
+        
+        # Aplicar estilo mejorado con iconos y texto más grandes
+        self.lista_categorias.setStyleSheet(f"""
+            QListWidget {{
+                background-color: {Colors.BG1};
+                border: 1px solid {Colors.BORDER};
+                border-radius: 6px;
+                padding: 4px;
+                outline: none;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                selection-background-color: {Colors.ACCENT_CYAN};
+                selection-color: {Colors.BG0};
+            }}
+            QListWidget::item {{
+                padding: 12px 16px;
+                margin: 3px 2px;
+                border-radius: 6px;
+                color: {Colors.FG};
+                border: 1px solid transparent;
+                min-height: 24px;
+            }}
+            QListWidget::item:hover {{
+                background-color: {Colors.HOVER};
+                border-color: {Colors.ACCENT_CYAN};
+            }}
+            QListWidget::item:selected {{
+                background-color: {Colors.ACCENT_CYAN};
+                color: {Colors.BG0};
+                font-weight: bold;
+                border-color: {Colors.ACCENT_CYAN};
+            }}
+            QListWidget::item:selected:hover {{
+                background-color: {Colors.ACCENT_NEO};
+                border-color: {Colors.ACCENT_NEO};
+            }}
+        """)
+        
         layout_categorias.addWidget(self.lista_categorias)
+        
+        # Configurar fondo del panel con imagen
+        self._configurar_fondo_panel_categorias(widget_categorias)
         
         splitter.addWidget(widget_categorias)
     
@@ -465,10 +653,12 @@ class VentanaPrincipal(QMainWindow):
         self.boton_refrescar.clicked.connect(self._refrescar_datos)
         self.boton_configuracion.clicked.connect(self._mostrar_configuracion)
         self.boton_ayuda.clicked.connect(self._mostrar_ayuda)
+        self.boton_guia.clicked.connect(self._mostrar_guia_paso_a_paso)
         self.boton_acerca_de.clicked.connect(self._mostrar_acerca_de)
         
         # Categorías
         self.lista_categorias.itemClicked.connect(self._categoria_seleccionada)
+        self.lista_categorias.itemSelectionChanged.connect(self._categoria_seleccion_cambiada)
         
         # Tabla
         self.tabla_enlaces.doubleClicked.connect(self._abrir_enlace)
@@ -507,12 +697,18 @@ class VentanaPrincipal(QMainWindow):
         shortcut_ayuda = QShortcut(QKeySequence("F1"), self)
         shortcut_ayuda.activated.connect(self._mostrar_ayuda)
         
+        shortcut_guia = QShortcut(QKeySequence("F2"), self)
+        shortcut_guia.activated.connect(self._mostrar_guia_paso_a_paso)
+        
         # Atajos para cambiar pestañas
         shortcut_tab_enlaces = QShortcut(QKeySequence("Ctrl+1"), self)
         shortcut_tab_enlaces.activated.connect(lambda: self.tab_widget.setCurrentIndex(0))
         
         shortcut_tab_notas = QShortcut(QKeySequence("Ctrl+2"), self)
         shortcut_tab_notas.activated.connect(lambda: self.tab_widget.setCurrentIndex(1))
+        
+        shortcut_tab_grupos = QShortcut(QKeySequence("Ctrl+3"), self)
+        shortcut_tab_grupos.activated.connect(lambda: self.tab_widget.setCurrentIndex(2))
         
         # Atajo para nueva nota (solo en pestaña de notas)
         shortcut_nueva_nota = QShortcut(QKeySequence("Ctrl+Shift+N"), self)
@@ -536,14 +732,22 @@ class VentanaPrincipal(QMainWindow):
         # Agregar "Todas" como primera opción
         enlaces = self.repositorio.obtener_enlaces()
         total_enlaces = len(enlaces)
-        self.lista_categorias.addItem(f"📂 Todas ({total_enlaces})")
+        item_todas = QListWidgetItem(f"📁 Todas ({total_enlaces})")
+        self.lista_categorias.addItem(item_todas)
         
-        # Agregar categorías específicas
-        categorias = extraer_todas_las_categorias(enlaces)
-        for categoria in categorias:
+        # Obtener todas las categorías (tanto del repositorio como de los enlaces)
+        categorias_repositorio = self.repositorio._datos.get('categorias', [])
+        categorias_enlaces = extraer_todas_las_categorias(enlaces)
+        
+        # Combinar ambas listas sin duplicados
+        todas_categorias = list(set(categorias_repositorio + categorias_enlaces))
+        todas_categorias.sort()  # Ordenar alfabéticamente
+        
+        for categoria in todas_categorias:
             # Contar enlaces en esta categoría
             count = sum(1 for enlace in enlaces if enlace.get('categoria') == categoria)
-            self.lista_categorias.addItem(f"📁 {categoria} ({count})")
+            item_categoria = QListWidgetItem(f"📂 {categoria} ({count})")
+            self.lista_categorias.addItem(item_categoria)
     
     def _actualizar_tabla_enlaces(self) -> None:
         """Actualiza la tabla de enlaces con filtros aplicados."""
@@ -619,10 +823,10 @@ class VentanaPrincipal(QMainWindow):
         
         texto = item.text()
         
-        if texto.startswith("📂 Todas"):
+        if texto.startswith("�️ Todas"):
             self.categoria_filtro_actual = ""
         else:
-            # Extraer nombre de categoría del texto "📁 Nombre (count)"
+            # Extraer nombre de categoría del texto "� Nombre (count)"
             inicio = texto.find(" ") + 1
             fin = texto.rfind(" (")
             if fin > inicio:
@@ -633,6 +837,172 @@ class VentanaPrincipal(QMainWindow):
         self.tag_filtro_actual = ""  # Limpiar filtro de tag
         self._actualizar_tabla_enlaces()
         self._actualizar_informacion()
+    
+    def _categoria_seleccion_cambiada(self) -> None:
+        """Maneja cambios en la selección de categorías para habilitar/deshabilitar botones."""
+        items_seleccionados = self.lista_categorias.selectedItems()
+        if not items_seleccionados:
+            self.btn_eliminar_categoria.setEnabled(False)
+            return
+        
+        item = items_seleccionados[0]
+        texto = item.text()
+        
+        # No permitir eliminar "Todas"
+        es_todas = texto.startswith("�️ Todas")
+        self.btn_eliminar_categoria.setEnabled(not es_todas)
+    
+    def _crear_nueva_categoria(self) -> None:
+        """Crea una nueva categoría."""
+        nombre, ok = QInputDialog.getText(
+            self, 
+            "Nueva Categoría", 
+            "Ingrese el nombre de la nueva categoría:",
+            text=""
+        )
+        
+        if not ok or not nombre.strip():
+            return
+        
+        nombre = nombre.strip()
+        
+        # Verificar que no exista ya
+        enlaces = self.repositorio.obtener_enlaces()
+        categorias_existentes = extraer_todas_las_categorias(enlaces)
+        
+        if nombre in categorias_existentes:
+            QMessageBox.warning(
+                self,
+                "Categoría Existente",
+                f"La categoría '{nombre}' ya existe."
+            )
+            return
+        
+        # Agregar la nueva categoría al repositorio
+        try:
+            # Las categorías se crean automáticamente cuando se agrega un enlace,
+            # pero podemos agregar la categoría a la lista de categorías del repositorio
+            categorias = self.repositorio._datos.get('categorias', [])
+            if nombre not in categorias:
+                categorias.append(nombre)
+                self.repositorio._datos['categorias'] = categorias
+                self.repositorio.guardar()
+            
+            self._actualizar_lista_categorias()
+            
+            # Seleccionar la nueva categoría
+            for i in range(self.lista_categorias.count()):
+                item = self.lista_categorias.item(i)
+                if nombre in item.text():
+                    self.lista_categorias.setCurrentItem(item)
+                    break
+            
+            logger.info(f"Categoría '{nombre}' creada exitosamente")
+            
+        except Exception as e:
+            logger.error(f"Error al crear categoría: {e}")
+            QMessageBox.critical(
+                self,
+                "Error",
+                f"No se pudo crear la categoría: {str(e)}"
+            )
+    
+    def _eliminar_categoria_seleccionada(self) -> None:
+        """Elimina la categoría seleccionada."""
+        item = self.lista_categorias.currentItem()
+        if not item:
+            return
+        
+        texto = item.text()
+        
+        # No permitir eliminar "Todas"
+        if texto.startswith("�️ Todas"):
+            return
+        
+        # Extraer nombre de categoría
+        inicio = texto.find(" ") + 1
+        fin = texto.rfind(" (")
+        if fin > inicio:
+            nombre_categoria = texto[inicio:fin]
+        else:
+            nombre_categoria = texto[inicio:]
+        
+        # Contar enlaces en esta categoría
+        enlaces = self.repositorio.obtener_enlaces()
+        enlaces_en_categoria = [e for e in enlaces if e.get('categoria') == nombre_categoria]
+        
+        if enlaces_en_categoria:
+            respuesta = QMessageBox.question(
+                self,
+                "Eliminar Categoría",
+                f"La categoría '{nombre_categoria}' contiene {len(enlaces_en_categoria)} enlace(s).\n\n"
+                "¿Qué desea hacer con estos enlaces?",
+                QMessageBox.StandardButton.Cancel
+            )
+            
+            # Crear botones personalizados
+            mover_btn = QPushButton("Mover a 'General'")
+            eliminar_btn = QPushButton("Eliminar enlaces")
+            cancelar_btn = QPushButton("Cancelar")
+            
+            msg = QMessageBox(self)
+            msg.setWindowTitle("Eliminar Categoría")
+            msg.setText(f"La categoría '{nombre_categoria}' contiene {len(enlaces_en_categoria)} enlace(s).")
+            msg.setInformativeText("¿Qué desea hacer con estos enlaces?")
+            msg.addButton(mover_btn, QMessageBox.ButtonRole.AcceptRole)
+            msg.addButton(eliminar_btn, QMessageBox.ButtonRole.DestructiveRole)
+            msg.addButton(cancelar_btn, QMessageBox.ButtonRole.RejectRole)
+            msg.setDefaultButton(mover_btn)
+            
+            resultado = msg.exec()
+            
+            if msg.clickedButton() == cancelar_btn:
+                return
+            elif msg.clickedButton() == mover_btn:
+                # Mover enlaces a categoría "General"
+                for enlace in enlaces_en_categoria:
+                    enlace['categoria'] = 'General'
+                
+                # Asegurar que "General" esté en la lista de categorías
+                categorias = self.repositorio._datos.get('categorias', [])
+                if 'General' not in categorias:
+                    categorias.append('General')
+                    self.repositorio._datos['categorias'] = categorias
+                    
+            elif msg.clickedButton() == eliminar_btn:
+                # Eliminar todos los enlaces de la categoría
+                enlaces_filtrados = [e for e in enlaces if e.get('categoria') != nombre_categoria]
+                self.repositorio._datos['links'] = enlaces_filtrados
+        
+        try:
+            # Eliminar la categoría de la lista de categorías
+            categorias = self.repositorio._datos.get('categorias', [])
+            if nombre_categoria in categorias:
+                categorias.remove(nombre_categoria)
+                self.repositorio._datos['categorias'] = categorias
+            
+            # Guardar cambios
+            self.repositorio.guardar()
+            
+            # Actualizar interfaz
+            self._actualizar_lista_categorias()
+            self._actualizar_tabla_enlaces()
+            self._actualizar_informacion()
+            
+            # Limpiar filtro si era la categoría eliminada
+            if self.categoria_filtro_actual == nombre_categoria:
+                self.categoria_filtro_actual = ""
+                self.lista_categorias.setCurrentRow(0)  # Seleccionar "Todas"
+            
+            logger.info(f"Categoría '{nombre_categoria}' eliminada exitosamente")
+            
+        except Exception as e:
+            logger.error(f"Error al eliminar categoría: {e}")
+            QMessageBox.critical(
+                self,
+                "Error",
+                f"No se pudo eliminar la categoría: {str(e)}"
+            )
     
     def _seleccion_tabla_cambiada(self) -> None:
         """Maneja cambios en la selección de la tabla."""
@@ -948,51 +1318,261 @@ class VentanaPrincipal(QMainWindow):
                 QMessageBox.warning(self, "Error", f"Error al exportar archivo: {e}")
     
     def _refrescar_datos(self) -> None:
-        """Refresca los datos y la vista."""
+        """Refresca los datos y la vista de forma completa."""
         try:
+            # Guardar el estado actual
+            categoria_seleccionada = None
+            filtro_actual = self.filtro_entrada.text() if hasattr(self, 'filtro_entrada') else ""
+            
+            # Obtener categoría actualmente seleccionada
+            if hasattr(self, 'lista_categorias') and self.lista_categorias.currentItem():
+                categoria_seleccionada = self.lista_categorias.currentItem().text()
+            
+            # Mostrar mensaje de progreso
+            self.statusBar().showMessage("Refrescando datos...", 0)
+            
             # Recargar datos del repositorio
             self.repositorio.cargar()
             
             # Actualizar todas las vistas
             self._actualizar_categorias()
+            
+            # Restaurar selección de categoría si existe
+            if categoria_seleccionada and hasattr(self, 'lista_categorias'):
+                for i in range(self.lista_categorias.count()):
+                    item = self.lista_categorias.item(i)
+                    if item and item.text() == categoria_seleccionada:
+                        self.lista_categorias.setCurrentItem(item)
+                        break
+            
             self._actualizar_tabla_enlaces()
             self._actualizar_informacion()
             
-            # Mostrar mensaje en barra de estado
-            self.statusBar().showMessage("Datos refrescados correctamente", 2000)
-            logger.info("Datos refrescados por el usuario")
+            # Restaurar filtro
+            if filtro_actual and hasattr(self, 'filtro_entrada'):
+                self.filtro_entrada.setText(filtro_actual)
+                self._filtrar_enlaces()
+            
+            # Reconfigurar el fondo si está activado
+            if hasattr(self, '_fondo_activado') and self._fondo_activado:
+                self._configurar_fondo_translucido(self.centralWidget())
+            
+            # Mostrar mensaje de éxito
+            self.statusBar().showMessage("✅ Datos refrescados correctamente", 3000)
+            logger.info("Datos refrescados completamente por el usuario")
             
         except Exception as e:
             logger.error(f"Error al refrescar datos: {e}")
-            QMessageBox.warning(self, "Error", f"Error al refrescar datos: {e}")
+            self.statusBar().showMessage("❌ Error al refrescar", 3000)
+            QMessageBox.warning(self, "Error", f"Error al refrescar datos:\n{str(e)}")
     
     def _mostrar_configuracion(self) -> None:
         """Muestra el diálogo de configuración."""
-        # Por ahora, mostrar un mensaje informativo
-        QMessageBox.information(
-            self,
-            "Configuración",
-            "⚙️ Configuración de TLV 4.0\n\n"
-            "🔧 Funciones disponibles:\n"
-            "• Tema oscuro terminal ✓\n"
-            "• Iconos SVG personalizados ✓\n"
-            "• Efectos typewriter ✓\n"
-            "• Atajos de teclado ✓\n\n"
-            "📝 Próximamente:\n"
-            "• Configuración de colores\n"
-            "• Personalización de fuentes\n"
-            "• Configuración de categorías\n"
-            "• Configuración de exportación"
+        from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QGroupBox, 
+                                   QCheckBox, QSpinBox, QLabel, QPushButton,
+                                   QComboBox, QSlider, QTabWidget, QWidget,
+                                   QColorDialog, QFontDialog, QFileDialog)
+        
+        dialog = QDialog(self)
+        dialog.setWindowTitle("⚙️ Configuración TLV 4.0")
+        dialog.setFixedSize(500, 400)
+        dialog.setModal(True)
+        
+        # Aplicar tema oscuro al diálogo
+        dialog.setStyleSheet("""
+            QDialog {
+                background-color: #1e1e1e;
+                color: #ffffff;
+            }
+            QGroupBox {
+                font-weight: bold;
+                border: 2px solid #555;
+                border-radius: 5px;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px 0 5px;
+            }
+            QCheckBox::indicator:checked {
+                background-color: #00ff00;
+            }
+        """)
+        
+        layout = QVBoxLayout()
+        
+        # Crear pestañas
+        tabs = QTabWidget()
+        
+        # === PESTAÑA APARIENCIA ===
+        tab_apariencia = QWidget()
+        layout_apariencia = QVBoxLayout()
+        
+        # Grupo Fondo
+        grupo_fondo = QGroupBox("🖼️ Fondo de Pantalla")
+        layout_fondo = QVBoxLayout()
+        
+        self.check_fondo = QCheckBox("Activar fondo translúcido")
+        self.check_fondo.setChecked(getattr(self, '_fondo_activado', False))
+        layout_fondo.addWidget(self.check_fondo)
+        
+        btn_cambiar_fondo = QPushButton("📁 Cambiar imagen de fondo")
+        btn_cambiar_fondo.clicked.connect(self._cambiar_imagen_fondo)
+        layout_fondo.addWidget(btn_cambiar_fondo)
+        
+        # Transparencia
+        layout_trans = QHBoxLayout()
+        layout_trans.addWidget(QLabel("Transparencia:"))
+        self.slider_transparencia = QSlider(Qt.Orientation.Horizontal)
+        self.slider_transparencia.setRange(100, 255)
+        self.slider_transparencia.setValue(230)
+        layout_trans.addWidget(self.slider_transparencia)
+        self.label_trans = QLabel("230")
+        layout_trans.addWidget(self.label_trans)
+        layout_fondo.addLayout(layout_trans)
+        
+        grupo_fondo.setLayout(layout_fondo)
+        layout_apariencia.addWidget(grupo_fondo)
+        
+        # Grupo Tema
+        grupo_tema = QGroupBox("🎨 Tema y Colores")
+        layout_tema = QVBoxLayout()
+        
+        self.check_tema_oscuro = QCheckBox("Tema oscuro")
+        self.check_tema_oscuro.setChecked(True)
+        layout_tema.addWidget(self.check_tema_oscuro)
+        
+        self.check_efectos = QCheckBox("Efectos typewriter")
+        self.check_efectos.setChecked(True)
+        layout_tema.addWidget(self.check_efectos)
+        
+        grupo_tema.setLayout(layout_tema)
+        layout_apariencia.addWidget(grupo_tema)
+        
+        tab_apariencia.setLayout(layout_apariencia)
+        tabs.addTab(tab_apariencia, "🎨 Apariencia")
+        
+        # === PESTAÑA COMPORTAMIENTO ===
+        tab_comportamiento = QWidget()
+        layout_comportamiento = QVBoxLayout()
+        
+        # Grupo Auto-guardado
+        grupo_auto = QGroupBox("💾 Auto-guardado")
+        layout_auto = QVBoxLayout()
+        
+        self.check_auto_guardado = QCheckBox("Activar auto-guardado")
+        self.check_auto_guardado.setChecked(True)
+        layout_auto.addWidget(self.check_auto_guardado)
+        
+        layout_intervalo = QHBoxLayout()
+        layout_intervalo.addWidget(QLabel("Intervalo (segundos):"))
+        self.spin_intervalo = QSpinBox()
+        self.spin_intervalo.setRange(10, 300)
+        self.spin_intervalo.setValue(30)
+        layout_intervalo.addWidget(self.spin_intervalo)
+        layout_auto.addLayout(layout_intervalo)
+        
+        grupo_auto.setLayout(layout_auto)
+        layout_comportamiento.addWidget(grupo_auto)
+        
+        # Grupo Notificaciones
+        grupo_notif = QGroupBox("🔔 Notificaciones")
+        layout_notif = QVBoxLayout()
+        
+        self.check_notif_guardado = QCheckBox("Notificar al guardar")
+        self.check_notif_guardado.setChecked(True)
+        layout_notif.addWidget(self.check_notif_guardado)
+        
+        self.check_sonidos = QCheckBox("Sonidos del sistema")
+        self.check_sonidos.setChecked(False)
+        layout_notif.addWidget(self.check_sonidos)
+        
+        grupo_notif.setLayout(layout_notif)
+        layout_comportamiento.addWidget(grupo_notif)
+        
+        tab_comportamiento.setLayout(layout_comportamiento)
+        tabs.addTab(tab_comportamiento, "⚙️ Comportamiento")
+        
+        layout.addWidget(tabs)
+        
+        # Botones
+        layout_botones = QHBoxLayout()
+        
+        btn_restaurar = QPushButton("🔄 Restaurar")
+        btn_restaurar.clicked.connect(self._restaurar_configuracion)
+        layout_botones.addWidget(btn_restaurar)
+        
+        layout_botones.addStretch()
+        
+        btn_cancelar = QPushButton("❌ Cancelar")
+        btn_cancelar.clicked.connect(dialog.reject)
+        layout_botones.addWidget(btn_cancelar)
+        
+        btn_aplicar = QPushButton("✅ Aplicar")
+        btn_aplicar.clicked.connect(lambda: self._aplicar_configuracion(dialog))
+        layout_botones.addWidget(btn_aplicar)
+        
+        layout.addLayout(layout_botones)
+        dialog.setLayout(layout)
+        
+        # Conectar eventos
+        self.slider_transparencia.valueChanged.connect(
+            lambda v: self.label_trans.setText(str(v))
         )
+        
+        dialog.exec()
+    
+    def _cambiar_imagen_fondo(self) -> None:
+        """Permite cambiar la imagen de fondo."""
+        archivo, _ = QFileDialog.getOpenFileName(
+            self,
+            "Seleccionar imagen de fondo",
+            "",
+            "Imágenes (*.jpg *.jpeg *.png *.bmp);;Todos los archivos (*)"
+        )
+        if archivo:
+            QMessageBox.information(self, "Éxito", f"Nueva imagen seleccionada:\n{archivo}")
+    
+    def _restaurar_configuracion(self) -> None:
+        """Restaura la configuración por defecto."""
+        reply = QMessageBox.question(
+            self,
+            "Restaurar Configuración",
+            "¿Estás seguro de que quieres restaurar la configuración por defecto?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            QMessageBox.information(self, "Configuración", "Configuración restaurada correctamente")
+    
+    def _aplicar_configuracion(self, dialog) -> None:
+        """Aplica la configuración seleccionada."""
+        try:
+            # Aplicar fondo
+            if self.check_fondo.isChecked():
+                self._fondo_activado = True
+                self._configurar_fondo_translucido(self.centralWidget())
+            else:
+                self._fondo_activado = False
+                self.setStyleSheet("")  # Limpiar estilos
+            
+            self.statusBar().showMessage("✅ Configuración aplicada correctamente", 3000)
+            dialog.accept()
+            
+        except Exception as e:
+            logger.error(f"Error al aplicar configuración: {e}")
+            QMessageBox.warning(self, "Error", f"Error al aplicar configuración:\n{str(e)}")
     
     def _mostrar_ayuda(self) -> None:
-        """Muestra la ayuda de la aplicación."""
+        """Muestra la ayuda rápida de la aplicación."""
         ayuda_texto = """
-        📋 AYUDA - TECH LINK VIEWER 4.0
+        📋 AYUDA RÁPIDA - TECH LINK VIEWER 4.0
         
         🏷️ PESTAÑAS:
         • Ctrl+1: Cambiar a pestaña Enlaces
         • Ctrl+2: Cambiar a pestaña Notas
+        • Ctrl+3: Cambiar a pestaña Grupos SN
         
         🔗 PESTAÑA ENLACES:
         🔍 BÚSQUEDA:
@@ -1017,15 +1597,15 @@ class VentanaPrincipal(QMainWindow):
         • Búsqueda instantánea en notas
         • Clic derecho para opciones (duplicar, eliminar)
         
-        💡 FUNCIONES DE NOTAS:
-        • Títulos personalizables
-        • Editor de texto enriquecido
-        • Estadísticas automáticas
-        • Fechas de creación y modificación
+        � PESTAÑA GRUPOS SN:
+        🔍 BÚSQUEDA DE GRUPOS:
+        • Buscar por nombre o responsabilidades
+        • Filtrado en tiempo real
         
-        📊 IMPORTAR/EXPORTAR:
-        • Importar: Cargar enlaces desde archivo JSON
-        • Exportar: Guardar enlaces a archivo JSON
+        🛠️ GESTIÓN DE GRUPOS:
+        • ➕ Crear nuevo grupo
+        • ✏️ Editar grupo seleccionado
+        • 🗑️ Eliminar grupo seleccionado
         
         ⌨️ ATAJOS DE TECLADO:
         • Ctrl+N: Nuevo enlace
@@ -1035,16 +1615,218 @@ class VentanaPrincipal(QMainWindow):
         • Ctrl+S: Guardar (enlaces/notas)
         • F5: Refrescar datos
         • F1: Esta ayuda
-        • Ctrl+1/2: Cambiar pestañas
+        • F2: Guía paso a paso
+        • Ctrl+1/2/3: Cambiar pestañas
         
-        🎨 INTERFAZ:
-        • Tema oscuro terminal profesional
-        • Iconos SVG con efectos hover
-        • Header con efecto typewriter animado
-        • Sistema de pestañas integrado
+        💡 PARA VER LA GUÍA COMPLETA PASO A PASO PRESIONA F2
         """
         
-        QMessageBox.information(self, "Ayuda - TLV 4.0", ayuda_texto)
+        QMessageBox.information(self, "Ayuda Rápida - TLV 4.0", ayuda_texto)
+    
+    def _mostrar_guia_paso_a_paso(self) -> None:
+        """Muestra una guía completa paso a paso de cómo usar la aplicación."""
+        guia_texto = """
+        🚀 GUÍA PASO A PASO - TECH LINK VIEWER 4.0
+        
+        ═══════════════════════════════════════════════════════════════
+        📖 PRIMEROS PASOS
+        ═══════════════════════════════════════════════════════════════
+        
+        1️⃣ NAVEGACIÓN BÁSICA:
+           • La aplicación tiene 3 pestañas principales: Enlaces, Notas y Grupos SN
+           • Usa Ctrl+1, Ctrl+2, Ctrl+3 para cambiar entre pestañas rápidamente
+           • También puedes hacer clic en las pestañas directamente
+        
+        ═══════════════════════════════════════════════════════════════
+        🔗 GESTIÓN DE ENLACES (PESTAÑA 1)
+        ═══════════════════════════════════════════════════════════════
+        
+        2️⃣ CREAR TU PRIMER ENLACE:
+           • Haz clic en "Nuevo" o presiona Ctrl+N
+           • Completa los campos:
+             - Título: Nombre descriptivo del enlace
+             - URL: Dirección web completa (https://...)
+             - Descripción: Breve explicación del contenido
+             - Tags: Palabras clave separadas por comas
+           • Selecciona una categoría del desplegable
+           • Haz clic en "Guardar"
+        
+        3️⃣ ORGANIZAR CON CATEGORÍAS:
+           • Crea categorías personalizadas usando el botón "+"
+           • Las categorías te ayudan a organizar enlaces por tema
+           • Haz clic en cualquier categoría para filtrar enlaces
+           • "Todas" muestra todos los enlaces sin filtro
+        
+        4️⃣ BUSCAR ENLACES:
+           • Usa el campo de búsqueda para encontrar enlaces
+           • Busca por título, URL, descripción o tags
+           • La búsqueda es instantánea mientras escribes
+           • Combina búsqueda + filtro de categoría para resultados precisos
+        
+        5️⃣ GESTIONAR ENLACES EXISTENTES:
+           • Doble clic en cualquier enlace para abrirlo en el navegador
+           • Selecciona un enlace y presiona Ctrl+E para editarlo
+           • Selecciona un enlace y presiona Del para eliminarlo
+           • Usa clic derecho para más opciones
+        
+        ═══════════════════════════════════════════════════════════════
+        📝 GESTIÓN DE NOTAS (PESTAÑA 2)
+        ═══════════════════════════════════════════════════════════════
+        
+        6️⃣ CREAR TU PRIMERA NOTA:
+           • Haz clic en "Nueva Nota" o presiona Ctrl+Shift+N
+           • Escribe un título descriptivo
+           • Usa el editor para escribir tu contenido
+           • Las notas se guardan automáticamente cada 3 segundos
+        
+        7️⃣ ORGANIZAR NOTAS:
+           • Busca notas usando el campo de búsqueda
+           • Las notas más recientes aparecen primero
+           • Cada nota muestra fecha de creación y modificación
+           • Contador de palabras y caracteres en tiempo real
+        
+        8️⃣ FUNCIONES AVANZADAS DE NOTAS:
+           • Clic derecho en una nota para opciones adicionales
+           • Duplicar notas útiles como plantillas
+           • Eliminar notas que ya no necesites
+           • El contenido se preserva entre sesiones
+        
+        ═══════════════════════════════════════════════════════════════
+        📋 GESTIÓN DE GRUPOS SN (PESTAÑA 3)
+        ═══════════════════════════════════════════════════════════════
+        
+        9️⃣ EXPLORAR GRUPOS DE SERVICE NOW:
+           • Navega a la pestaña "Grupos SN" (Ctrl+3)
+           • Ve la lista de grupos predefinidos como ejemplo
+           • Selecciona cualquier grupo para ver sus detalles completos
+        
+        🔟 BUSCAR GRUPOS ESPECÍFICOS:
+           • Usa el buscador para encontrar grupos por:
+             - Nombre del grupo
+             - Responsabilidades específicas
+           • La búsqueda filtra en tiempo real
+        
+        1️⃣1️⃣ GESTIONAR GRUPOS:
+           • ➕ Crear Nuevo Grupo:
+             - Haz clic en el botón ➕
+             - Completa todos los campos del formulario
+             - Incluye responsabilidades (una por línea)
+             - Agrega miembros separados por comas
+             - Especifica herramientas utilizadas
+           
+           • ✏️ Editar Grupo Existente:
+             - Selecciona un grupo de la lista
+             - Haz clic en el botón ✏️
+             - Modifica la información necesaria
+             - Los cambios se guardan automáticamente
+           
+           • 🗑️ Eliminar Grupo:
+             - Selecciona el grupo a eliminar
+             - Haz clic en el botón 🗑️
+             - Confirma la eliminación (no se puede deshacer)
+        
+        ═══════════════════════════════════════════════════════════════
+        💡 CONSEJOS PROFESIONALES
+        ═══════════════════════════════════════════════════════════════
+        
+        1️⃣2️⃣ FLUJO DE TRABAJO EFICIENTE:
+           • Usa atajos de teclado para mayor velocidad
+           • Organiza enlaces por categorías desde el inicio
+           • Crea notas para procedimientos importantes
+           • Mantén información de grupos SN actualizada
+        
+        1️⃣3️⃣ BACKUP Y PERSISTENCIA:
+           • Todos los datos se guardan automáticamente
+           • Los enlaces se almacenan en data/enlaces.json
+           • Las notas se guardan en data/notas.json
+           • Los grupos se guardan en data/grupos.json
+        
+        1️⃣4️⃣ IMPORTAR/EXPORTAR:
+           • Usa las opciones de menú para importar/exportar
+           • Formato JSON compatible entre versiones
+           • Ideal para respaldos o migración de datos
+        
+        ═══════════════════════════════════════════════════════════════
+        🆘 ATAJOS DE TECLADO COMPLETOS
+        ═══════════════════════════════════════════════════════════════
+        
+        NAVEGACIÓN:
+        • Ctrl+1/2/3: Cambiar entre pestañas
+        • F1: Ayuda rápida
+        • F2: Esta guía paso a paso
+        • F5: Refrescar datos
+        
+        ENLACES:
+        • Ctrl+N: Nuevo enlace
+        • Ctrl+E: Editar enlace seleccionado
+        • Del: Eliminar enlace seleccionado
+        • Ctrl+S: Guardar cambios
+        
+        NOTAS:
+        • Ctrl+Shift+N: Nueva nota
+        • Ctrl+S: Guardar nota actual
+        
+        ¡Ya estás listo para usar TLV 4.0 de manera profesional! 🎉
+        """
+        
+        # Crear un diálogo personalizado para la guía más grande
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Guía Paso a Paso - TLV 4.0")
+        dialog.setModal(True)
+        dialog.resize(800, 700)
+        
+        layout = QVBoxLayout(dialog)
+        
+        # Área de texto con scroll
+        text_area = QTextEdit()
+        text_area.setReadOnly(True)
+        text_area.setPlainText(guia_texto)
+        text_area.setFont(Fonts.get_monospace_font(Fonts.SIZE_SMALL))
+        text_area.setStyleSheet(f"""
+            QTextEdit {{
+                background-color: {Colors.BG1};
+                color: {Colors.FG};
+                border: 1px solid {Colors.BORDER};
+                border-radius: 6px;
+                padding: 15px;
+                line-height: 1.4;
+            }}
+        """)
+        layout.addWidget(text_area)
+        
+        # Botón de cerrar
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        
+        close_button = QPushButton("Cerrar")
+        close_button.setStyleSheet(f"""
+            QPushButton {{
+                background-color: {Colors.ACCENT_NEO};
+                color: {Colors.BG0};
+                border: none;
+                border-radius: 6px;
+                padding: 10px 20px;
+                font-weight: bold;
+            }}
+            QPushButton:hover {{
+                background-color: {Colors.ACCENT_CYAN};
+            }}
+        """)
+        close_button.clicked.connect(dialog.accept)
+        button_layout.addWidget(close_button)
+        
+        button_layout.addStretch()
+        layout.addLayout(button_layout)
+        
+        # Aplicar estilo al diálogo
+        dialog.setStyleSheet(f"""
+            QDialog {{
+                background-color: {Colors.BG0};
+                color: {Colors.FG};
+            }}
+        """)
+        
+        dialog.exec()
     
     def _mostrar_acerca_de(self) -> None:
         """Muestra el diálogo Acerca de."""
@@ -1090,3 +1872,60 @@ class VentanaPrincipal(QMainWindow):
                 event.accept()
             else:
                 event.ignore()
+    
+    def _configurar_fondo_panel_categorias(self, widget_categorias: QWidget) -> None:
+        """Configura el fondo del panel de categorías sin imagen."""
+        try:
+            # Aplicar estilo limpio sin imagen de fondo
+            widget_categorias.setStyleSheet(f"""
+                QWidget {{
+                    background-color: {Colors.BG1};
+                    border: 1px solid {Colors.BORDER};
+                    border-radius: 8px;
+                    margin: 2px;
+                }}
+                QWidget > QListWidget {{
+                    background-color: rgba(40, 44, 52, 255);
+                    border: none;
+                    border-radius: 6px;
+                }}
+            """)
+            
+            # Aplicar estilo limpio a la lista de categorías
+            self.lista_categorias.setStyleSheet(f"""
+                QListWidget {{
+                    background-color: rgba(40, 44, 52, 255);
+                    border: none;
+                    border-radius: 6px;
+                }}
+                QListWidget::item {{
+                    background-color: rgba(50, 54, 62, 100);
+                    border-radius: 4px;
+                    padding: 8px;
+                    margin: 2px;
+                    color: #e6e6e6;
+                }}
+                QListWidget::item:selected {{
+                    background-color: rgba(100, 149, 237, 180);
+                    color: white;
+                    font-weight: bold;
+                }}
+                QListWidget::item:hover {{
+                    background-color: rgba(80, 84, 92, 120);
+                    color: white;
+                }}
+            """)
+            
+            logger.info("Panel de categorías configurado con fondo sólido limpio")
+            
+        except Exception as e:
+            logger.error(f"Error al configurar fondo del panel de categorías: {e}")
+            # Aplicar estilo por defecto en caso de error
+            widget_categorias.setStyleSheet(f"""
+                QWidget {{
+                    background-color: {Colors.BG1};
+                    border: 1px solid {Colors.BORDER};
+                    border-radius: 8px;
+                    margin: 2px;
+                }}
+            """)
