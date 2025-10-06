@@ -5,6 +5,49 @@ from typing import List, Dict, Any, Optional, Tuple
 from PyQt6.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant, pyqtSignal
 from PyQt6.QtGui import QFont, QColor
 from ..utils.time import formatear_fecha
+from ..config import obtener_config_tabla
+
+
+def truncar_url_inteligente(url: str, max_chars: int = 60) -> str:
+    """
+    Trunca una URL de manera inteligente preservando información importante.
+    
+    Args:
+        url: URL a truncar
+        max_chars: Máximo número de caracteres
+        
+    Returns:
+        URL truncada
+    """
+    if len(url) <= max_chars:
+        return url
+    
+    # Intentar preservar el dominio y la parte final importante
+    if "://" in url:
+        protocolo, resto = url.split("://", 1)
+        if "/" in resto:
+            dominio, path = resto.split("/", 1)
+            # Si el dominio es muy largo, truncarlo también
+            if len(dominio) > max_chars - 10:
+                dominio_truncado = dominio[:max_chars - 13] + "..."
+                return f"{protocolo}://{dominio_truncado}"
+            else:
+                # Mostrar dominio + inicio del path
+                chars_disponibles = max_chars - len(protocolo) - len(dominio) - 6  # "://" + "..."
+                if chars_disponibles > 0:
+                    path_truncado = path[:chars_disponibles]
+                    return f"{protocolo}://{dominio}/{path_truncado}..."
+                else:
+                    return f"{protocolo}://{dominio}/..."
+        else:
+            # Solo dominio, truncar si es necesario
+            if len(resto) > max_chars - len(protocolo) - 6:
+                resto_truncado = resto[:max_chars - len(protocolo) - 6]
+                return f"{protocolo}://{resto_truncado}..."
+            return url
+    
+    # Si no tiene protocolo, truncar normalmente
+    return url[:max_chars - 3] + "..."
 
 
 class ModeloTablaEnlaces(QAbstractTableModel):
@@ -75,10 +118,8 @@ class ModeloTablaEnlaces(QAbstractTableModel):
             
         elif columna == 1:  # URL
             url = enlace.get('url', '')
-            # Truncar URL si es muy larga
-            if len(url) > 50:
-                return url[:47] + "..."
-            return url
+            config = obtener_config_tabla()
+            return truncar_url_inteligente(url, max_chars=config['url_max_chars'])
             
         elif columna == 2:  # Categoría
             return enlace.get('categoria', '')
@@ -121,9 +162,34 @@ class ModeloTablaEnlaces(QAbstractTableModel):
     def _obtener_tooltip(self, enlace: Dict[str, Any], columna: int) -> str:
         """Obtiene el tooltip para una celda específica."""
         if columna == 0:  # Título
-            return f"Título: {enlace.get('titulo', '')}\nDoble clic para abrir"
+            titulo = enlace.get('titulo', '')
+            descripcion = enlace.get('descripcion', '')
+            tooltip = f"📝 Título: {titulo}"
+            if descripcion:
+                tooltip += f"\n💬 Descripción: {descripcion}"
+            tooltip += "\n🖱️ Doble clic para abrir"
+            return tooltip
+            
         elif columna == 1:  # URL completa
-            return f"URL: {enlace.get('url', '')}\nDoble clic para abrir"
+            url = enlace.get('url', '')
+            tooltip = f"🌐 URL: {url}"
+            
+            # Añadir información adicional si la URL fue truncada
+            if len(url) > 60:
+                tooltip += f"\n📏 Longitud: {len(url)} caracteres"
+                
+            # Extraer dominio para mostrar información adicional
+            if "://" in url:
+                try:
+                    protocolo, resto = url.split("://", 1)
+                    dominio = resto.split("/")[0]
+                    tooltip += f"\n🏠 Dominio: {dominio}"
+                    tooltip += f"\n🔐 Protocolo: {protocolo.upper()}"
+                except:
+                    pass
+                    
+            tooltip += "\n🖱️ Doble clic para abrir"
+            return tooltip
         elif columna == 2:  # Categoría
             return f"Categoría: {enlace.get('categoria', '')}\nClic para filtrar"
         elif columna == 3:  # Tags

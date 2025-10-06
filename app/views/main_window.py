@@ -25,6 +25,7 @@ from ..widgets import TitleBar, NotesWidget
 from ..widgets.about_dialog import AboutDialog
 from ..delegates import TagDelegate
 from .link_dialog import DialogoEnlace
+from ..config import obtener_config_tabla, obtener_config_app
 
 
 logger = logging.getLogger(__name__)
@@ -397,18 +398,33 @@ class VentanaPrincipal(QMainWindow):
         self.tabla_enlaces.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
         self.tabla_enlaces.setSortingEnabled(True)
         
-        # Configurar altura de filas para mejor legibilidad
-        self.tabla_enlaces.verticalHeader().setDefaultSectionSize(40)  # Altura de 40px por fila
-        self.tabla_enlaces.verticalHeader().setMinimumSectionSize(35)  # Mínimo 35px
+        # Configurar altura de filas optimizada para URLs largas
+        config_tabla = obtener_config_tabla()
+        self.tabla_enlaces.verticalHeader().setDefaultSectionSize(config_tabla['fila_altura_default'])
+        self.tabla_enlaces.verticalHeader().setMinimumSectionSize(config_tabla['fila_altura_minima'])
+        self.tabla_enlaces.verticalHeader().setMaximumSectionSize(config_tabla['fila_altura_maxima'])
+        
+        # Configurar wrap de texto según configuración
+        self.tabla_enlaces.setWordWrap(config_tabla['word_wrap'])
         
         # Aplicar delegate de tags para la columna de tags
         self.tag_delegate = TagDelegate()
         # Asumiendo que la columna de tags es la columna 3 (0-indexada)
         self.tabla_enlaces.setItemDelegateForColumn(3, self.tag_delegate)
         
-        # Configurar columnas
+        # Configurar columnas con anchos optimizados
         header = self.tabla_enlaces.horizontalHeader()
         header.setStretchLastSection(True)
+        
+        # Configurar anchos de columnas específicos para URLs largas
+        header.setDefaultSectionSize(150)  # Ancho por defecto
+        
+        # Anchos específicos por columna usando configuración
+        self.tabla_enlaces.setColumnWidth(0, config_tabla['columna_titulo'])   # Título
+        self.tabla_enlaces.setColumnWidth(1, config_tabla['columna_url'])      # URL
+        self.tabla_enlaces.setColumnWidth(2, config_tabla['columna_categoria']) # Categoría
+        self.tabla_enlaces.setColumnWidth(3, config_tabla['columna_tags'])     # Tags
+        # La columna 4 (Fecha) se ajustará automáticamente
         
         layout_enlaces.addWidget(self.tabla_enlaces)
         
