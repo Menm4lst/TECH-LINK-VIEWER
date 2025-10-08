@@ -63,7 +63,7 @@ class ModeloTablaEnlaces(QAbstractTableModel):
         super().__init__()
         self._enlaces: List[Dict[str, Any]] = []
         self._enlaces_con_score: List[Tuple[Dict[str, Any], float]] = []
-        self._columnas = ["Título", "URL", "Categoría", "Tags", "Actualizado"]
+        self._columnas = ["⭐", "Título", "URL", "Categoría", "Tags", "Actualizado"]  # ⭐ Nueva columna favorito
         self._usar_scores = False
     
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
@@ -107,7 +107,11 @@ class ModeloTablaEnlaces(QAbstractTableModel):
     
     def _obtener_dato_display(self, enlace: Dict[str, Any], columna: int) -> str:
         """Obtiene el dato a mostrar para una columna específica."""
-        if columna == 0:  # Título
+        if columna == 0:  # ⭐ Favorito
+            es_favorito = enlace.get('es_favorito', False)
+            return "⭐" if es_favorito else "☆"
+            
+        elif columna == 1:  # Título
             titulo = enlace.get('titulo', '')
             # Si hay score, mostrar indicador de relevancia
             if self._usar_scores:
@@ -116,21 +120,21 @@ class ModeloTablaEnlaces(QAbstractTableModel):
                     return f"🔍 {titulo}"  # Indicador de búsqueda fuzzy
             return titulo
             
-        elif columna == 1:  # URL
+        elif columna == 2:  # URL
             url = enlace.get('url', '')
             config = obtener_config_tabla()
             return truncar_url_inteligente(url, max_chars=config['url_max_chars'])
             
-        elif columna == 2:  # Categoría
+        elif columna == 3:  # Categoría
             return enlace.get('categoria', '')
             
-        elif columna == 3:  # Tags
+        elif columna == 4:  # Tags
             tags = enlace.get('tags', [])
             if isinstance(tags, list):
                 return ", ".join(tags)
             return ""
             
-        elif columna == 4:  # Fecha actualización
+        elif columna == 5:  # Fecha actualización
             timestamp = enlace.get('actualizado_en', '')
             return formatear_fecha(timestamp)
         
@@ -140,9 +144,11 @@ class ModeloTablaEnlaces(QAbstractTableModel):
         """Obtiene la fuente para una celda específica."""
         fuente = QFont()
         
-        if columna == 0:  # Título en negrita
+        if columna == 0:  # ⭐ Favorito - más grande
+            fuente.setPointSize(14)
+        elif columna == 1:  # Título en negrita
             fuente.setBold(True)
-        elif columna == 3:  # Tags en cursiva
+        elif columna == 4:  # Tags en cursiva
             fuente.setItalic(True)
             fuente.setPointSize(9)
         

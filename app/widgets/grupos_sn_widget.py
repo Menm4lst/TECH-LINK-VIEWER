@@ -18,7 +18,9 @@ from app.theme.colors import Colors
 from app.theme.fonts import Fonts
 from app.config import (
     obtener_color_scheme, obtener_typography, obtener_spacing, 
-    obtener_elevation, get_color, get_font_size, get_spacing, get_border_radius
+    obtener_elevation, get_color, get_font_size, get_spacing, get_border_radius,
+    obtener_fluent_colors, obtener_fluent_typography, obtener_fluent_spacing,
+    obtener_fluent_elevation, obtener_fluent_motion
 )
 
 logger = logging.getLogger(__name__)
@@ -36,6 +38,7 @@ class GruposSNWidget(QWidget):
         self._setup_ui()
         self._cargar_datos_ejemplo()
         self._conectar_senales()
+        self._aplicar_estilos_fluent()
         
     def _setup_ui(self):
         """Configura la interfaz de usuario con estilo moderno."""
@@ -582,6 +585,165 @@ class GruposSNWidget(QWidget):
                 f"El grupo '{grupo['nombre']}' ha sido eliminado exitosamente."
             )
             logger.info(f"Grupo eliminado: {grupo['nombre']}")
+
+    def _aplicar_estilos_fluent(self):
+        """Aplica estilos Fluent Design System a todo el widget de grupos (compatible PyQt6)"""
+        colors = obtener_fluent_colors()
+        typography = obtener_fluent_typography()
+        spacing = obtener_fluent_spacing()
+        elevation = obtener_fluent_elevation()
+        
+        self.setStyleSheet(f"""
+            /* =============================================================================
+               FLUENT DESIGN SYSTEM - GRUPOS SN WIDGET
+               Microsoft Fluent Design compatible con PyQt6
+            ============================================================================= */
+            
+            /* Widget principal */
+            QWidget {{
+                background-color: {colors['surface_secondary']};
+                color: {colors['text_primary']};
+                font-family: {typography['font_family_primary']};
+                border-radius: {elevation['border_radius']['large']}px;
+            }}
+            
+            /* Labels con tipografía Fluent */
+            QLabel {{
+                color: {colors['text_primary']};
+                font-family: {typography['font_family_primary']};
+                font-weight: {typography['font_weights']['semibold']};
+                font-size: {typography['font_sizes']['body']}px;
+            }}
+            
+            /* Campo de búsqueda Fluent */
+            QLineEdit {{
+                background-color: {colors['surface_secondary']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['md']}px {spacing['lg']}px;
+                color: {colors['text_primary']};
+                font-size: {typography['font_sizes']['body']}px;
+                min-height: 32px;
+            }}
+            
+            QLineEdit:focus {{
+                border: 2px solid {colors['stroke_focus']};
+                background-color: {colors['surface_primary']};
+                outline: none;
+            }}
+            
+            QLineEdit:hover {{
+                border-color: {colors['stroke_accent']};
+                background-color: {colors['hover_light']};
+            }}
+            
+            /* Lista de grupos con Fluent Design */
+            QListWidget {{
+                background-color: {colors['surface_elevated']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['sm']}px;
+                color: {colors['text_primary']};
+                font-size: {typography['font_sizes']['body']}px;
+            }}
+            
+            QListWidget::item {{
+                background: transparent;
+                color: {colors['text_primary']};
+                padding: {spacing['lg']}px {spacing['md']}px;
+                border-radius: {elevation['border_radius']['medium']}px;
+                margin: {spacing['xs']}px;
+                border: 1px solid transparent;
+            }}
+            
+            QListWidget::item:selected {{
+                background-color: {colors['selection_strong']};
+                color: {colors['text_on_accent']};
+                border-color: {colors['stroke_accent']};
+                font-weight: {typography['font_weights']['semibold']};
+            }}
+            
+            QListWidget::item:hover:!selected {{
+                background-color: {colors['hover_light']};
+                border-color: {colors['stroke_secondary']};
+                color: {colors['primary']};
+            }}
+            
+            /* Panel de texto con contenido HTML */
+            QTextBrowser {{
+                background-color: {colors['surface_elevated']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['lg']}px;
+                color: {colors['text_primary']};
+                font-family: {typography['font_family_primary']};
+                font-size: {typography['font_sizes']['body']}px;
+            }}
+            
+            /* Botones Fluent */
+            QPushButton {{
+                background-color: {colors['surface_secondary']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['sm']}px {spacing['xl']}px;
+                color: {colors['text_primary']};
+                font-size: {typography['font_sizes']['body']}px;
+                font-weight: {typography['font_weights']['semibold']};
+                min-height: 32px;
+            }}
+            
+            QPushButton:hover {{
+                background-color: {colors['hover_light']};
+                color: {colors['primary']};
+                border-color: {colors['stroke_accent']};
+            }}
+            
+            QPushButton:pressed {{
+                background-color: {colors['hover_medium']};
+                color: {colors['primary_dark']};
+            }}
+            
+            QPushButton:focus {{
+                border: 2px solid {colors['stroke_focus']};
+                outline: none;
+            }}
+            
+            /* Splitter Fluent */
+            QSplitter::handle {{
+                background-color: {colors['stroke_secondary']};
+                width: 3px;
+                margin: {spacing['sm']}px 0;
+                border-radius: 2px;
+            }}
+            
+            QSplitter::handle:hover {{
+                background-color: {colors['primary_light']};
+                width: 4px;
+            }}
+            
+            /* Scrollbars Fluent */
+            QScrollBar:vertical {{
+                background-color: {colors['surface_tertiary']};
+                width: 16px;
+                border-radius: 8px;
+                margin: 0;
+            }}
+            
+            QScrollBar::handle:vertical {{
+                background-color: {colors['stroke_primary']};
+                border-radius: 8px;
+                min-height: 20px;
+                margin: 2px;
+            }}
+            
+            QScrollBar::handle:vertical:hover {{
+                background-color: {colors['primary_light']};
+            }}
+            
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
+                height: 0px;
+            }}
+        """)
 
 
 class GrupoDialog(QDialog):

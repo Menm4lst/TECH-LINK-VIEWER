@@ -31,6 +31,9 @@ class RepositorioEnlaces:
         """
         self.ruta_archivo = ruta_archivo
         self._datos = self._cargar_o_crear_datos()
+        
+        # ⭐ Migrar enlaces existentes para soporte de favoritos
+        self.migrar_favoritos()
     
     def _cargar_o_crear_datos(self) -> Dict[str, Any]:
         """
@@ -83,6 +86,7 @@ class RepositorioEnlaces:
                     "url": "https://www.google.com",
                     "categoria": "Personal",
                     "tags": ["google", "buscador"],
+                    "es_favorito": True,  # ⭐ Nuevo campo favorito
                     "creado_en": timestamp_actual,
                     "actualizado_en": timestamp_actual
                 },
@@ -92,6 +96,7 @@ class RepositorioEnlaces:
                     "url": "https://www.trabajo.com",
                     "categoria": "Trabajo",
                     "tags": ["trabajo"],
+                    "es_favorito": False,  # ⭐ Nuevo campo favorito
                     "creado_en": timestamp_actual,
                     "actualizado_en": timestamp_actual
                 }
@@ -172,7 +177,7 @@ class RepositorioEnlaces:
         
         return False
     
-    def agregar_enlace(self, titulo: str, url: str, categoria: str, tags: List[str]) -> Optional[str]:
+    def agregar_enlace(self, titulo: str, url: str, categoria: str, tags: List[str], es_favorito: bool = False) -> Optional[str]:
         """
         Agrega un nuevo enlace.
         
@@ -181,6 +186,7 @@ class RepositorioEnlaces:
             url: URL del enlace
             categoria: Categoría del enlace
             tags: Lista de tags
+            es_favorito: Si el enlace es favorito (por defecto False)
             
         Returns:
             ID del enlace creado o None si hay error
@@ -215,6 +221,7 @@ class RepositorioEnlaces:
             "url": url_limpia,
             "categoria": categoria.strip(),
             "tags": tags_limpios,
+            "es_favorito": es_favorito,  # ⭐ Nuevo campo favorito
             "creado_en": timestamp_actual,
             "actualizado_en": timestamp_actual
         }
@@ -231,7 +238,7 @@ class RepositorioEnlaces:
         return enlace_id
     
     def actualizar_enlace(self, enlace_id: str, titulo: str, url: str, 
-                         categoria: str, tags: List[str]) -> bool:
+                         categoria: str, tags: List[str], es_favorito: bool = None) -> bool:
         """
         Actualiza un enlace existente.
         
@@ -241,6 +248,7 @@ class RepositorioEnlaces:
             url: Nueva URL
             categoria: Nueva categoría
             tags: Nuevos tags
+            es_favorito: Estado de favorito (None para mantener el actual)
             
         Returns:
             True si se actualizó correctamente, False en caso contrario
@@ -268,13 +276,20 @@ class RepositorioEnlaces:
             if enlace.get('id') == enlace_id:
                 tags_limpios = limpiar_tags(tags)
                 
-                enlace.update({
+                # Preparar datos de actualización
+                datos_actualizacion = {
                     "titulo": titulo.strip(),
                     "url": url_limpia,
                     "categoria": categoria.strip(),
                     "tags": tags_limpios,
                     "actualizado_en": obtener_timestamp_actual()
-                })
+                }
+                
+                # Solo actualizar favorito si se especifica
+                if es_favorito is not None:
+                    datos_actualizacion["es_favorito"] = es_favorito
+                
+                enlace.update(datos_actualizacion)
                 
                 # Agregar categoría si no existe
                 if categoria not in self._datos.setdefault('categorias', []):
@@ -470,5 +485,134 @@ class RepositorioEnlaces:
             'total_enlaces': len(enlaces),
             'total_categorias': len(categorias),
             'total_tags_unicos': len(tags_unicos),
-            'enlaces_por_categoria': contador_categorias
+            'enlaces_por_categoria': contador_categorias,
+            'total_favoritos': self.contar_favoritos()  # ⭐ Nueva estadística
         }
+    
+    # ⭐ NUEVAS FUNCIONES PARA FAVORITOS
+    
+    def marcar_favorito(self, enlace_id: str) -> bool:
+        """
+        Marca un enlace como favorito.
+        
+        Args:
+            enlace_id: ID del enlace a marcar como favorito
+            
+        Returns:
+            True si se marcó correctamente, False en caso contrario
+        """
+        for enlace in self._datos.get('links', []):
+            if enlace.get('id') == enlace_id:
+                enlace['es_favorito'] = True
+                enlace['actualizado_en'] = obtener_timestamp_actual()
+                logger.info(f"Enlace marcado como favorito: {enlace.get('titulo')}")
+                return True
+        
+        logger.error(f"Enlace no encontrado: {enlace_id}")
+        return False
+    
+    def desmarcar_favorito(self, enlace_id: str) -> bool:
+        """
+        Desmarca un enlace como favorito.
+        
+        Args:
+            enlace_id: ID del enlace a desmarcar como favorito
+            
+        Returns:
+            True si se desmarcó correctamente, False en caso contrario
+        """
+        for enlace in self._datos.get('links', []):
+            if enlace.get('id') == enlace_id:
+                enlace['es_favorito'] = False
+                enlace['actualizado_en'] = obtener_timestamp_actual()
+                logger.info(f"Enlace desmarcado como favorito: {enlace.get('titulo')}")
+                return True
+        
+        logger.error(f"Enlace no encontrado: {enlace_id}")
+        return False
+    
+    def alternar_favorito(self, enlace_id: str) -> bool:
+        """
+        Alterna el estado de favorito de un enlace.
+        
+        Args:
+            enlace_id: ID del enlace
+            
+        Returns:
+            True si el enlace ahora es favorito, False si no es favorito, None si error
+        """
+        for enlace in self._datos.get('links', []):
+            if enlace.get('id') == enlace_id:
+                # Obtener estado actual (por defecto False para compatibilidad)
+                es_favorito_actual = enlace.get('es_favorito', False)
+                nuevo_estado = not es_favorito_actual
+                
+                enlace['es_favorito'] = nuevo_estado
+                enlace['actualizado_en'] = obtener_timestamp_actual()
+                
+                accion = "marcado" if nuevo_estado else "desmarcado"
+                logger.info(f"Enlace {accion} como favorito: {enlace.get('titulo')}")
+                return nuevo_estado
+        
+        logger.error(f"Enlace no encontrado: {enlace_id}")
+        return None
+    
+    def obtener_favoritos(self) -> List[Dict[str, Any]]:
+        """
+        Obtiene todos los enlaces marcados como favoritos.
+        
+        Returns:
+            Lista de enlaces favoritos
+        """
+        favoritos = []
+        for enlace in self._datos.get('links', []):
+            if enlace.get('es_favorito', False):
+                favoritos.append(enlace.copy())
+        
+        # Ordenar por fecha de actualización (más recientes primero)
+        favoritos.sort(key=lambda x: x.get('actualizado_en', ''), reverse=True)
+        return favoritos
+    
+    def contar_favoritos(self) -> int:
+        """
+        Cuenta el número total de enlaces favoritos.
+        
+        Returns:
+            Número de enlaces favoritos
+        """
+        count = 0
+        for enlace in self._datos.get('links', []):
+            if enlace.get('es_favorito', False):
+                count += 1
+        return count
+    
+    def es_favorito(self, enlace_id: str) -> bool:
+        """
+        Verifica si un enlace es favorito.
+        
+        Args:
+            enlace_id: ID del enlace
+            
+        Returns:
+            True si es favorito, False en caso contrario
+        """
+        for enlace in self._datos.get('links', []):
+            if enlace.get('id') == enlace_id:
+                return enlace.get('es_favorito', False)
+        return False
+    
+    def migrar_favoritos(self) -> None:
+        """
+        Migra enlaces existentes para agregar el campo es_favorito si no existe.
+        Esta función se ejecuta automáticamente en la carga.
+        """
+        migrados = 0
+        for enlace in self._datos.get('links', []):
+            if 'es_favorito' not in enlace:
+                enlace['es_favorito'] = False
+                migrados += 1
+        
+        if migrados > 0:
+            logger.info(f"Migrados {migrados} enlaces para soporte de favoritos")
+            # Guardar automáticamente después de la migración
+            self.guardar()

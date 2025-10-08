@@ -20,7 +20,8 @@
         "buscador"
       ],
       "creado_en": "2025-10-03T12:00:00",
-      "actualizado_en": "2025-10-03T12:00:00"
+      "actualizado_en": "2025-10-08T16:10:42.452197",
+      "es_favorito": false
     },
     {
       "id": "550e8400-e29b-41d4-a716-446655440001",
@@ -31,7 +32,8 @@
         "trabajo"
       ],
       "creado_en": "2025-10-03T12:00:00",
-      "actualizado_en": "2025-10-03T12:00:00"
+      "actualizado_en": "2025-10-08T16:10:02.193002",
+      "es_favorito": false
     },
     {
       "id": "59c5f441-b2b0-4cc9-a428-dda6015c98b0",
@@ -45,7 +47,8 @@
         "desarrollo"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-08T16:07:57.595110",
+      "es_favorito": false
     },
     {
       "id": "09770fea-6a1b-41da-84e5-ad8b809823c2",
@@ -59,7 +62,8 @@
         "código"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "4b85d70c-1297-4e23-8425-12762d1b3464",
@@ -73,7 +77,8 @@
         "tecnología"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "9c2dfa03-7f66-4135-9611-409af0c1ff51",
@@ -87,7 +92,8 @@
         "conexiones"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "2091e962-c166-41c6-9c7c-78517b487f33",
@@ -101,7 +107,8 @@
         "lenguaje"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "842552ea-8754-494f-ac58-7d308370d629",
@@ -116,7 +123,8 @@
         "documentación"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "7dc131ba-ea12-40f2-b424-d96899c5a53c",
@@ -130,7 +138,8 @@
         "infraestructura"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "dfd2a166-b090-45f4-b052-fb5932078127",
@@ -144,7 +153,8 @@
         "deployment"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "12970c39-8cc6-47e4-8705-6d1ae3381f60",
@@ -158,7 +168,8 @@
         "discusión"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     },
     {
       "id": "cbc1e7a9-d601-4b40-8a17-7f70b82f9193",
@@ -172,7 +183,8 @@
         "emprendimiento"
       ],
       "creado_en": "2025-10-03T11:23:23.564361",
-      "actualizado_en": "2025-10-03T11:23:23.564361"
+      "actualizado_en": "2025-10-03T11:23:23.564361",
+      "es_favorito": false
     }
   ]
 }

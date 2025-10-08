@@ -524,3 +524,133 @@
 2025-10-08 14:25:44,787 - app.ui_main - INFO - Aplicación iniciada correctamente
 2025-10-08 14:25:53,734 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
 2025-10-08 14:26:18,933 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-08 14:49:18,809 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:49:18,841 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:49:18,844 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:49:18,845 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:49:18,846 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:49:18,847 - __main__ - ERROR - Error fatal: 'stroke_tertiary'
+2025-10-08 14:50:18,810 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:50:18,843 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:50:18,846 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:50:18,846 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:50:18,847 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:50:19,202 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:50:19,223 - __main__ - ERROR - Error fatal: 'surface_elevated'
+2025-10-08 14:54:17,704 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:54:17,734 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:54:17,736 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:54:17,737 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:54:17,738 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:54:18,116 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:54:18,133 - __main__ - ERROR - Error fatal: 'surface_variant'
+2025-10-08 14:55:40,703 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:55:40,733 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:55:40,735 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:55:40,736 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:55:40,737 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:55:41,053 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:55:41,070 - __main__ - ERROR - Error fatal: 'outline_variant'
+2025-10-08 14:57:54,998 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:57:55,032 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:57:55,034 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:57:55,034 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:57:55,036 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:57:55,393 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:57:55,418 - __main__ - ERROR - Error fatal: 'medium'
+2025-10-08 14:58:32,865 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:58:32,899 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:58:32,901 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:58:32,901 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:58:32,904 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 14:58:33,259 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:58:33,325 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 14:58:33,326 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 14:58:33,326 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 14:58:33,410 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 14:58:33,541 - __main__ - INFO - Aplicación iniciada correctamente
+2025-10-08 14:59:10,725 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-08 14:59:15,373 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 14:59:15,383 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 15:03:20,611 - __main__ - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:03:20,645 - __main__ - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:03:20,647 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:03:20,647 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:03:20,650 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:03:20,651 - __main__ - ERROR - Error fatal: name 'FLUENT_COLOR_SCHEME' is not defined
+2025-10-08 15:13:12,302 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:13:12,338 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:13:12,339 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:13:12,340 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:13:12,341 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:13:12,640 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 15:13:12,702 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 15:13:12,703 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 15:13:12,704 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 15:13:12,752 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 15:13:12,870 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 15:13:24,196 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-08 15:14:06,716 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:14:06,717 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 15:24:59,765 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:24:59,809 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:24:59,812 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:24:59,812 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:24:59,814 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:25:00,275 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 15:25:00,332 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 15:25:00,333 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 15:25:00,333 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 15:25:00,395 - app.widgets.toast_notification - INFO - ToastManager inicializado
+2025-10-08 15:25:00,395 - app.widgets.toast_notification - INFO - Sistema global de toasts inicializado
+2025-10-08 15:25:00,396 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 15:25:00,562 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 15:25:01,416 - app.widgets.toast_notification - INFO - Toast info: 🚀 ¡Bienvenido a TECH LINK VIEWER! 12 enlaces cargados
+2025-10-08 15:25:18,076 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:25:18,079 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 15:32:59,954 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:32:59,991 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:32:59,994 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:32:59,995 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:32:59,997 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:33:00,903 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 15:33:00,945 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 15:33:00,949 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 15:33:00,949 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 15:33:00,985 - app.widgets.toast_notification - INFO - ToastManager inicializado
+2025-10-08 15:33:00,986 - app.widgets.toast_notification - INFO - Sistema global de toasts inicializado
+2025-10-08 15:33:00,986 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 15:33:01,131 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 15:34:02,407 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:34:02,432 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:34:02,433 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:34:02,434 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:34:02,435 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:34:02,750 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 15:34:02,790 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 15:34:02,791 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 15:34:02,791 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 15:34:02,833 - app.widgets.toast_notification - INFO - ToastManager inicializado
+2025-10-08 15:34:02,833 - app.widgets.toast_notification - INFO - Sistema global de toasts inicializado
+2025-10-08 15:34:02,834 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 15:34:02,922 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 15:34:03,842 - app.widgets.toast_notification - INFO - Toast info: 🚀 ¡Bienvenido a TECH LINK VIEWER! 12 enlaces cargados
+2025-10-08 15:34:19,314 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:34:19,316 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 15:38:37,328 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 15:38:37,356 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:38:37,358 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:38:37,359 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 15:38:37,360 - app.views.main_window - INFO - Fondo translúcido configurado correctamente con fondo.jpg
+2025-10-08 15:38:37,684 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 15:38:37,720 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 15:38:37,721 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-08 15:38:37,721 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 15:38:37,764 - app.widgets.toast_notification - INFO - ToastManager inicializado
+2025-10-08 15:38:37,764 - app.widgets.toast_notification - INFO - Sistema global de toasts inicializado
+2025-10-08 15:38:37,764 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 15:38:37,863 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 15:38:38,775 - app.widgets.toast_notification - INFO - Toast info: 🚀 ¡Bienvenido a TECH LINK VIEWER! 12 enlaces cargados
+2025-10-08 15:39:57,318 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-08 15:40:15,949 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\data\links.json
+2025-10-08 15:40:15,950 - app.views.main_window - INFO - Aplicación cerrada correctamente

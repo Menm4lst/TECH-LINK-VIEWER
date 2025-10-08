@@ -22,13 +22,22 @@ from ..models.search import (
 )
 from ..utils.io import abrir_url
 from ..theme import Colors, Fonts, get_icon
-from ..widgets import TitleBar, NotesWidget, GruposSNWidget
+from ..widgets import (
+    TitleBar, NotesWidget, GruposSNWidget, FavoritosWidget,  # ⭐ Nuevo widget de favoritos
+    init_toast_system, show_success_toast, show_error_toast,
+    show_warning_toast, show_info_toast
+)
 from ..widgets.about_dialog import AboutDialog
 from ..delegates import TagDelegate
 from .link_dialog import DialogoEnlace
 from ..config import (
-    obtener_config_tabla, obtener_config_app, obtener_color_scheme, 
-    obtener_typography, obtener_spacing, obtener_elevation,
+    obtener_config_tabla, obtener_config_app, 
+    obtener_fluent_colors, obtener_fluent_typography, obtener_fluent_spacing, 
+    obtener_fluent_elevation, obtener_fluent_motion,
+    get_fluent_color, get_fluent_font_size, get_fluent_spacing, 
+    get_fluent_border_radius, get_fluent_shadow,
+    # Mantener compatibilidad
+    obtener_color_scheme, obtener_typography, obtener_spacing, obtener_elevation,
     get_color, get_font_size, get_spacing, get_border_radius, get_shadow
 )
 
@@ -63,6 +72,9 @@ class VentanaPrincipal(QMainWindow):
         self._conectar_senales()
         self._configurar_atajos()
         self._cargar_datos_iniciales()
+        
+        # Inicializar sistema de notificaciones toast
+        init_toast_system(self)
         
         logger.info("Ventana principal inicializada")
     
@@ -156,165 +168,357 @@ class VentanaPrincipal(QMainWindow):
             """
             logger.warning(f"No se encontró la imagen de fondo en: {fondo_path}")
         
-        # Aplicar el estilo moderno mejorado
-        self.setStyleSheet(self._generar_stylesheet_moderno())
+        # Aplicar el estilo Fluent Design System
+        self.setStyleSheet(self._generar_stylesheet_fluent())
 
-    def _generar_stylesheet_moderno(self) -> str:
-        """Genera el stylesheet moderno con el nuevo sistema de diseño"""
-        colors = obtener_color_scheme()
-        typography = obtener_typography()
-        spacing = obtener_spacing()
-        elevation = obtener_elevation()
+    def _generar_stylesheet_fluent(self) -> str:
+        """Genera el stylesheet completo usando Fluent Design System (compatible PyQt6)"""
+        colors = obtener_fluent_colors()
+        typography = obtener_fluent_typography()
+        spacing = obtener_fluent_spacing()
+        elevation = obtener_fluent_elevation()
         
         return f"""
-        /* Estilo base de la aplicación */
+        /* =============================================================================
+           FLUENT DESIGN SYSTEM - TECH LINK VIEWER 4.0
+           Microsoft Fluent Design compatible con PyQt6
+        ============================================================================= */
+        
+        /* Aplicación base */
         QMainWindow {{
-            background-color: {colors['surface']};
-            color: {colors['on_surface']};
+            background-color: {colors['surface_primary']};
+            color: {colors['text_primary']};
             font-family: {typography['font_family_primary']};
             font-size: {typography['font_sizes']['body']}px;
+            font-weight: {typography['font_weights']['regular']};
         }}
         
-        /* Widget central con elevación */
+        /* Widget central */
         QWidget#central_widget {{
-            background-color: {colors['surface']};
-            border-radius: {elevation['border_radius']['medium']}px;
+            background-color: {colors['surface_secondary']};
+            border: 1px solid {colors['stroke_primary']};
+            border-radius: {elevation['border_radius']['large']}px;
             margin: {spacing['sm']}px;
         }}
         
-        /* Estilo mejorado para tabs */
+        /* =============================================================================
+           SISTEMA DE NAVEGACIÓN FLUENT - TABS
+        ============================================================================= */
+        
         QTabWidget::pane {{
-            border: 1px solid {colors['outline']};
-            background-color: {colors['surface_variant']};
+            background-color: {colors['surface_elevated']};
+            border: 1px solid {colors['stroke_primary']};
             border-radius: {elevation['border_radius']['medium']}px;
+            padding: {spacing['md']}px;
             margin: {spacing['xs']}px;
         }}
         
+        QTabBar {{
+            background: transparent;
+            border: none;
+        }}
+        
         QTabBar::tab {{
-            background-color: {colors['surface_elevated']};
-            color: {colors['on_surface_variant']};
-            padding: {spacing['sm']}px {spacing['lg']}px;
-            margin-right: {spacing['xs']}px;
-            border-top-left-radius: {elevation['border_radius']['small']}px;
-            border-top-right-radius: {elevation['border_radius']['small']}px;
-            font-weight: {typography['font_weights']['medium']};
-            min-width: 120px;
+            background-color: {colors['surface_secondary']};
+            color: {colors['text_secondary']};
+            border: 1px solid {colors['stroke_secondary']};
+            border-bottom: none;
+            border-top-left-radius: {elevation['border_radius']['medium']}px;
+            border-top-right-radius: {elevation['border_radius']['medium']}px;
+            padding: {spacing['md']}px {spacing['xl']}px;
+            margin-right: {spacing['xxs']}px;
+            font-weight: {typography['font_weights']['semibold']};
+            min-width: 140px;
         }}
         
         QTabBar::tab:selected {{
             background-color: {colors['primary']};
-            color: {colors['on_primary']};
-            font-weight: {typography['font_weights']['semibold']};
+            color: {colors['text_on_accent']};
+            border-color: {colors['stroke_accent']};
         }}
         
         QTabBar::tab:hover:!selected {{
-            background-color: {colors['primary_variant']};
-            color: {colors['on_primary']};
+            background-color: {colors['hover_light']};
+            color: {colors['text_primary']};
+            border-color: {colors['stroke_accent']};
         }}
         
-        /* Botones mejorados */
+        /* =============================================================================
+           CONTROLES FLUENT - BOTONES
+        ============================================================================= */
+        
         QPushButton {{
-            background-color: {colors['surface_elevated']};
-            color: {colors['on_surface']};
-            border: 1px solid {colors['outline']};
-            border-radius: {elevation['border_radius']['small']}px;
-            padding: {spacing['sm']}px {spacing['md']}px;
-            font-weight: {typography['font_weights']['medium']};
+            background-color: {colors['surface_secondary']};
+            color: {colors['text_primary']};
+            border: 1px solid {colors['stroke_primary']};
+            border-radius: {elevation['border_radius']['medium']}px;
+            padding: {spacing['sm']}px {spacing['lg']}px;
+            font-family: {typography['font_family_primary']};
+            font-size: {typography['font_sizes']['body']}px;
+            font-weight: {typography['font_weights']['semibold']};
             min-height: 32px;
         }}
         
         QPushButton:hover {{
-            background-color: {colors['primary_variant']};
-            color: {colors['on_primary']};
-            border-color: {colors['primary']};
+            background-color: {colors['hover_light']};
+            border-color: {colors['stroke_accent']};
         }}
         
         QPushButton:pressed {{
-            background-color: {colors['primary_dark']};
-            color: {colors['on_primary']};
+            background-color: {colors['hover_medium']};
+            border-color: {colors['primary_dark']};
         }}
         
-        /* Campos de entrada mejorados */
+        QPushButton:focus {{
+            border: 2px solid {colors['stroke_focus']};
+            outline: none;
+        }}
+        
+        /* Botón primario Fluent */
+        QPushButton#primary_button {{
+            background-color: {colors['primary']};
+            color: {colors['text_on_accent']};
+            border: 1px solid {colors['primary']};
+        }}
+        
+        QPushButton#primary_button:hover {{
+            background-color: {colors['primary_light']};
+            border-color: {colors['primary_light']};
+        }}
+        
+        QPushButton#primary_button:pressed {{
+            background-color: {colors['primary_dark']};
+            border-color: {colors['primary_dark']};
+        }}
+        
+        /* =============================================================================
+           CAMPOS DE ENTRADA FLUENT
+        ============================================================================= */
+        
         QLineEdit, QTextEdit, QComboBox {{
-            background-color: {colors['surface_elevated']};
-            color: {colors['on_surface']};
-            border: 1px solid {colors['outline']};
+            background-color: {colors['surface_secondary']};
+            color: {colors['text_primary']};
+            border: 1px solid {colors['stroke_primary']};
             border-radius: {elevation['border_radius']['small']}px;
-            padding: {spacing['sm']}px;
+            padding: {spacing['sm']}px {spacing['md']}px;
+            font-family: {typography['font_family_primary']};
             font-size: {typography['font_sizes']['body']}px;
+            line-height: {typography['line_heights']['body']}px;
+        }}
+        
+        QLineEdit:hover, QTextEdit:hover, QComboBox:hover {{
+            border-color: {colors['stroke_accent']};
+            background-color: {colors['hover_light']};
         }}
         
         QLineEdit:focus, QTextEdit:focus, QComboBox:focus {{
-            border: 2px solid {colors['primary']};
-            background-color: {colors['surface']};
+            border: 2px solid {colors['stroke_focus']};
+            background-color: {colors['surface_primary']};
+            outline: none;
         }}
         
-        /* Lista mejorada */
+        /* =============================================================================
+           LISTAS FLUENT
+        ============================================================================= */
+        
         QListWidget {{
             background-color: {colors['surface_elevated']};
-            color: {colors['on_surface']};
-            border: 1px solid {colors['outline']};
-            border-radius: {elevation['border_radius']['small']}px;
+            color: {colors['text_primary']};
+            border: 1px solid {colors['stroke_primary']};
+            border-radius: {elevation['border_radius']['medium']}px;
             padding: {spacing['xs']}px;
+            font-family: {typography['font_family_primary']};
+            font-size: {typography['font_sizes']['body']}px;
         }}
         
         QListWidget::item {{
-            padding: {spacing['sm']}px;
+            background: transparent;
+            color: {colors['text_primary']};
+            padding: {spacing['md']}px {spacing['sm']}px;
             border-radius: {elevation['border_radius']['small']}px;
-            margin: 1px;
+            margin: {spacing['xxs']}px;
+            border: 1px solid transparent;
+        }}
+        
+        QListWidget::item:hover {{
+            background-color: {colors['hover_light']};
+            border-color: {colors['stroke_secondary']};
         }}
         
         QListWidget::item:selected {{
-            background-color: {colors['primary']};
-            color: {colors['on_primary']};
+            background-color: {colors['selection_strong']};
+            color: {colors['text_on_accent']};
+            border-color: {colors['stroke_accent']};
+            font-weight: {typography['font_weights']['semibold']};
         }}
         
-        QListWidget::item:hover:!selected {{
-            background-color: {colors['surface_variant']};
-        }}
+        /* =============================================================================
+           SCROLLBARS FLUENT
+        ============================================================================= */
         
-        /* Scrollbars estilizados */
         QScrollBar:vertical {{
-            background-color: {colors['surface_variant']};
-            width: 12px;
-            border-radius: 6px;
+            background-color: {colors['surface_tertiary']};
+            width: 16px;
+            border-radius: 8px;
             margin: 0;
         }}
         
         QScrollBar::handle:vertical {{
-            background-color: {colors['outline']};
-            border-radius: 6px;
+            background-color: {colors['stroke_primary']};
+            border-radius: 8px;
             min-height: 20px;
             margin: 2px;
         }}
         
         QScrollBar::handle:vertical:hover {{
-            background-color: {colors['primary_variant']};
+            background-color: {colors['primary_light']};
         }}
         
         QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
             height: 0px;
         }}
         
-        /* Toolbar mejorado */
+        QScrollBar:horizontal {{
+            background-color: {colors['surface_tertiary']};
+            height: 16px;
+            border-radius: 8px;
+            margin: 0;
+        }}
+        
+        QScrollBar::handle:horizontal {{
+            background-color: {colors['stroke_primary']};
+            border-radius: 8px;
+            min-width: 20px;
+            margin: 2px;
+        }}
+        
+        QScrollBar::handle:horizontal:hover {{
+            background-color: {colors['primary_light']};
+        }}
+        
+        /* =============================================================================
+           TOOLBAR FLUENT
+        ============================================================================= */
+        
         QToolBar {{
             background-color: {colors['surface_elevated']};
             border: none;
+            border-bottom: 1px solid {colors['stroke_secondary']};
             spacing: {spacing['sm']}px;
-            padding: {spacing['sm']}px;
+            padding: {spacing['sm']}px {spacing['md']}px;
         }}
         
         QToolBar QToolButton {{
-            background-color: transparent;
-            border: none;
+            background: transparent;
+            color: {colors['text_primary']};
+            border: 1px solid transparent;
             border-radius: {elevation['border_radius']['small']}px;
             padding: {spacing['sm']}px;
-            color: {colors['on_surface']};
+            margin: {spacing['xxs']}px;
         }}
         
         QToolBar QToolButton:hover {{
-            background-color: {colors['primary_variant']};
-            color: {colors['on_primary']};
+            background-color: {colors['hover_light']};
+            border-color: {colors['stroke_secondary']};
+            color: {colors['primary']};
+        }}
+        
+        QToolBar QToolButton:pressed {{
+            background-color: {colors['hover_medium']};
+            border-color: {colors['stroke_accent']};
+        }}
+        
+        /* =============================================================================
+           TABLA FLUENT DESIGN
+        ============================================================================= */
+        
+        QTableView {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['text_primary']};
+            border: 1px solid {colors['stroke_primary']};
+            border-radius: {elevation['border_radius']['medium']}px;
+            gridline-color: {colors['stroke_secondary']};
+            font-family: {typography['font_family_primary']};
+            font-size: {typography['font_sizes']['body']}px;
+            selection-background-color: {colors['selection_strong']};
+            selection-color: {colors['text_on_accent']};
+            show-decoration-selected: 1;
+            margin: {spacing['xs']}px;
+        }}
+        
+        QTableView::item {{
+            background: transparent;
+            color: {colors['text_primary']};
+            padding: {spacing['md']}px {spacing['sm']}px;
+            border: none;
+            border-bottom: 1px solid {colors['stroke_tertiary']};
+            font-size: {typography['font_sizes']['body']}px;
+            line-height: {typography['line_heights']['body']}px;
+        }}
+        
+        QTableView::item:alternate {{
+            background-color: {colors['surface_secondary']};
+        }}
+        
+        QTableView::item:hover {{
+            background-color: {colors['hover_light']};
+            color: {colors['text_primary']};
+        }}
+        
+        QTableView::item:selected {{
+            background-color: {colors['selection_strong']};
+            color: {colors['text_on_accent']};
+            font-weight: {typography['font_weights']['semibold']};
+        }}
+        
+        QTableView::item:selected:hover {{
+            background-color: {colors['primary_light']};
+        }}
+        
+        /* Headers de tabla Fluent */
+        QHeaderView {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['text_primary']};
+            border: none;
+            border-bottom: 2px solid {colors['stroke_primary']};
+            font-family: {typography['font_family_primary']};
+            font-weight: {typography['font_weights']['semibold']};
+            font-size: {typography['font_sizes']['caption']}px;
+        }}
+        
+        QHeaderView::section {{
+            background: transparent;
+            color: {colors['text_primary']};
+            padding: {spacing['md']}px {spacing['sm']}px;
+            border: none;
+            border-right: 1px solid {colors['stroke_secondary']};
+            text-transform: uppercase;
+            font-weight: {typography['font_weights']['semibold']};
+        }}
+        
+        QHeaderView::section:hover {{
+            background-color: {colors['hover_light']};
+            color: {colors['primary']};
+        }}
+        
+        QHeaderView::section:pressed {{
+            background-color: {colors['hover_medium']};
+            color: {colors['primary_dark']};
+        }}
+        
+        /* Indicadores de ordenamiento */
+        QHeaderView::down-arrow {{
+            image: none;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 6px solid {colors['primary']};
+        }}
+        
+        QHeaderView::up-arrow {{
+            image: none;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 6px solid {colors['primary']};
         }}
         """
 
@@ -436,6 +640,15 @@ class VentanaPrincipal(QMainWindow):
         self.boton_eliminar.setToolTip("Eliminar enlace seleccionado (Del)")
         self.boton_eliminar.setEnabled(False)
         toolbar.addWidget(self.boton_eliminar)
+        
+        # ⭐ Botón Favorito (nuevo)
+        self.boton_favorito = QToolButton()
+        # Usar texto emoji en lugar de icono por simplicidad
+        self.boton_favorito.setText("⭐")
+        self.boton_favorito.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.boton_favorito.setToolTip("Marcar como favorito (Ctrl+B)")
+        self.boton_favorito.setEnabled(False)
+        toolbar.addWidget(self.boton_favorito)
         
         toolbar.addSeparator()
         
@@ -593,12 +806,49 @@ class VentanaPrincipal(QMainWindow):
         self.tab_widget.addTab(self.grupos_sn_widget, "👥 Grupos SN")
     
     def _crear_panel_categorias(self, splitter: QSplitter) -> None:
-        """Crea el panel de categorías con estilo mejorado."""
-        widget_categorias = QWidget()
-        layout_categorias = QVBoxLayout(widget_categorias)
-        layout_categorias.setContentsMargins(8, 8, 8, 8)
-        layout_categorias.setSpacing(6)
+        """Crea el panel lateral con categorías y favoritos."""
+        widget_lateral = QWidget()
+        layout_lateral = QVBoxLayout(widget_lateral)
+        layout_lateral.setContentsMargins(8, 8, 8, 8)
+        layout_lateral.setSpacing(8)
         
+        # ⭐ SECCIÓN DE FAVORITOS (nueva)
+        self._crear_seccion_favoritos(layout_lateral)
+        
+        # Separador
+        separador = QFrame()
+        separador.setFrameShape(QFrame.Shape.HLine)
+        separador.setFrameShadow(QFrame.Shadow.Sunken)
+        separador.setStyleSheet(f"color: {Colors.BORDER};")
+        layout_lateral.addWidget(separador)
+        
+        # SECCIÓN DE CATEGORÍAS (existente)
+        self._crear_seccion_categorias(layout_lateral)
+        
+        # Configurar fondo del panel
+        self._configurar_fondo_panel_categorias(widget_lateral)
+        
+        splitter.addWidget(widget_lateral)
+    
+    def _crear_seccion_favoritos(self, layout_padre):
+        """Crea la sección de favoritos"""
+        # Widget de favoritos
+        self.widget_favoritos = FavoritosWidget(self)
+        self.widget_favoritos.setMaximumHeight(300)  # Altura máxima
+        self.widget_favoritos.setMinimumHeight(150)  # Altura mínima
+        
+        # Conectar señales del widget de favoritos
+        self.widget_favoritos.abrir_enlace.connect(self._abrir_enlace_por_id)
+        self.widget_favoritos.favorito_seleccionado.connect(self._seleccionar_enlace_por_id)
+        self.widget_favoritos.favorito_eliminado.connect(self._on_favorito_eliminado)
+        
+        # Asignar repositorio al widget
+        self.widget_favoritos.set_repositorio(self.repositorio)
+        
+        layout_padre.addWidget(self.widget_favoritos)
+    
+    def _crear_seccion_categorias(self, layout_padre):
+        """Crea la sección de categorías (código existente refactorizado)"""
         # Header con título y botones
         header_layout = QHBoxLayout()
         
@@ -668,7 +918,7 @@ class VentanaPrincipal(QMainWindow):
         self.btn_eliminar_categoria.clicked.connect(self._eliminar_categoria_seleccionada)
         header_layout.addWidget(self.btn_eliminar_categoria)
         
-        layout_categorias.addLayout(header_layout)
+        layout_padre.addLayout(header_layout)
         
         # Lista de categorías con estilo mejorado
         self.lista_categorias = QListWidget()
@@ -713,12 +963,7 @@ class VentanaPrincipal(QMainWindow):
             }}
         """)
         
-        layout_categorias.addWidget(self.lista_categorias)
-        
-        # Configurar fondo del panel con imagen
-        self._configurar_fondo_panel_categorias(widget_categorias)
-        
-        splitter.addWidget(widget_categorias)
+        layout_padre.addWidget(self.lista_categorias)
     
     def _crear_panel_enlaces(self, splitter: QSplitter) -> None:
         """Crea el panel de enlaces."""
@@ -892,6 +1137,7 @@ class VentanaPrincipal(QMainWindow):
         self.boton_nuevo.clicked.connect(self._nuevo_enlace)
         self.boton_editar.clicked.connect(self._editar_enlace_seleccionado)
         self.boton_eliminar.clicked.connect(self._eliminar_enlace_seleccionado)
+        self.boton_favorito.clicked.connect(self._alternar_favorito_seleccionado)  # ⭐ Nueva conexión
         self.boton_importar.clicked.connect(self._importar_json)
         self.boton_exportar.clicked.connect(self._exportar_json)
         
@@ -960,6 +1206,15 @@ class VentanaPrincipal(QMainWindow):
         shortcut_nueva_nota = QShortcut(QKeySequence("Ctrl+Shift+N"), self)
         shortcut_nueva_nota.activated.connect(self._nueva_nota_global)
         
+        # ⭐ NUEVOS ATAJOS PARA FAVORITOS
+        # Atajo para alternar favorito
+        shortcut_favorito = QShortcut(QKeySequence("Ctrl+B"), self)  # B de Bookmark
+        shortcut_favorito.activated.connect(self._alternar_favorito_seleccionado)
+        
+        # Atajo para mostrar solo favoritos
+        shortcut_ver_favoritos = QShortcut(QKeySequence("Ctrl+Shift+B"), self)
+        shortcut_ver_favoritos.activated.connect(self._mostrar_solo_favoritos)
+        
         # Atajo para limpiar búsqueda
         shortcut_escape = QShortcut(QKeySequence("Escape"), self)
         shortcut_escape.activated.connect(self._limpiar_busqueda)
@@ -970,6 +1225,15 @@ class VentanaPrincipal(QMainWindow):
         self._actualizar_tabla_enlaces()
         self._actualizar_informacion()
         self.barra_estado.showMessage("Datos cargados correctamente")
+        
+        # Mostrar toast de bienvenida con delay
+        QTimer.singleShot(1000, self._mostrar_toast_bienvenida)
+    
+    def _mostrar_toast_bienvenida(self):
+        """Muestra el toast de bienvenida al cargar la aplicación."""
+        enlaces = self.repositorio.obtener_enlaces()
+        total_enlaces = len(enlaces)
+        show_info_toast(f"🚀 ¡Bienvenido a TECH LINK VIEWER! {total_enlaces} enlaces cargados")
     
     def _actualizar_lista_categorias(self) -> None:
         """Actualiza la lista de categorías."""
@@ -1258,6 +1522,19 @@ class VentanaPrincipal(QMainWindow):
         # Habilitar/deshabilitar botones según hay selección
         self.boton_editar.setEnabled(hay_seleccion)
         self.boton_eliminar.setEnabled(hay_seleccion)
+        self.boton_favorito.setEnabled(hay_seleccion)  # ⭐ Habilitar botón favorito
+        
+        # ⭐ Actualizar texto del botón favorito según estado actual
+        if hay_seleccion:
+            enlace_seleccionado = self._obtener_enlace_seleccionado()
+            if enlace_seleccionado:
+                es_favorito = enlace_seleccionado.get('es_favorito', False)
+                if es_favorito:
+                    self.boton_favorito.setText("💔")  # Corazón roto para quitar
+                    self.boton_favorito.setToolTip("Quitar de favoritos (Ctrl+B)")
+                else:
+                    self.boton_favorito.setText("⭐")  # Estrella para agregar
+                    self.boton_favorito.setToolTip("Marcar como favorito (Ctrl+B)")
     
     def _enlace_clickeado(self, index) -> None:
         """Maneja el clic en un enlace."""
@@ -1304,6 +1581,25 @@ class VentanaPrincipal(QMainWindow):
         """Abre el enlace actualmente seleccionado."""
         self._abrir_enlace()
     
+    def _obtener_enlace_seleccionado(self) -> Optional[Dict[str, Any]]:
+        """Obtiene el enlace actualmente seleccionado en la tabla."""
+        try:
+            indices_seleccionados = self.tabla_enlaces.selectionModel().selectedRows()
+            if not indices_seleccionados:
+                return None
+            
+            # Obtener el primer enlace seleccionado
+            index = indices_seleccionados[0]
+            fila = index.row()
+            
+            if 0 <= fila < self.modelo_tabla.rowCount():
+                return self.modelo_tabla._enlaces[fila]
+            
+            return None
+        except Exception as e:
+            logger.error(f"Error obteniendo enlace seleccionado: {e}")
+            return None
+    
     def _nuevo_enlace(self) -> None:
         """Crea un nuevo enlace."""
         categorias = self.repositorio.obtener_categorias()
@@ -1333,10 +1629,13 @@ class VentanaPrincipal(QMainWindow):
             if self.repositorio.guardar():
                 self._cargar_datos_iniciales()
                 self.barra_estado.showMessage(f"Enlace '{datos['titulo']}' creado correctamente", 3000)
+                show_success_toast(f"🔗 Enlace '{datos['titulo']}' creado")
             else:
                 QMessageBox.warning(self, "Error", "No se pudo guardar el enlace.")
+                show_error_toast("❌ Error al guardar el enlace")
         else:
             QMessageBox.warning(self, "Error", "No se pudo crear el enlace. Verifica que la URL no esté duplicada.")
+            show_warning_toast("⚠️ URL duplicada o datos inválidos")
     
     def _editar_enlace_seleccionado(self) -> None:
         """Edita el enlace actualmente seleccionado."""
@@ -1378,10 +1677,13 @@ class VentanaPrincipal(QMainWindow):
             if self.repositorio.guardar():
                 self._cargar_datos_iniciales()
                 self.barra_estado.showMessage(f"Enlace '{datos['titulo']}' actualizado correctamente", 3000)
+                show_success_toast(f"✏️ Enlace '{datos['titulo']}' actualizado")
             else:
                 QMessageBox.warning(self, "Error", "No se pudo guardar los cambios.")
+                show_error_toast("❌ Error al guardar cambios")
         else:
             QMessageBox.warning(self, "Error", "No se pudo actualizar el enlace.")
+            show_error_toast("❌ Error al actualizar enlace")
     
     def _eliminar_enlace_seleccionado(self) -> None:
         """Elimina el enlace actualmente seleccionado."""
@@ -1408,17 +1710,22 @@ class VentanaPrincipal(QMainWindow):
                 if self.repositorio.guardar():
                     self._cargar_datos_iniciales()
                     self.barra_estado.showMessage(f"Enlace '{titulo}' eliminado correctamente", 3000)
+                    show_success_toast(f"🗑️ Enlace '{titulo}' eliminado")
                 else:
                     QMessageBox.warning(self, "Error", "No se pudo guardar los cambios.")
+                    show_error_toast("❌ Error al guardar los cambios")
             else:
                 QMessageBox.warning(self, "Error", "No se pudo eliminar el enlace.")
+                show_error_toast("❌ Error al eliminar el enlace")
     
     def _guardar_datos(self) -> None:
         """Guarda los datos manualmente."""
         if self.repositorio.guardar():
             self.barra_estado.showMessage("Datos guardados correctamente", 3000)
+            show_success_toast("💾 Datos guardados correctamente")
         else:
             QMessageBox.warning(self, "Error", "No se pudieron guardar los datos.")
+            show_error_toast("❌ Error al guardar los datos")
     
     def _nueva_categoria(self) -> None:
         """Crea una nueva categoría."""
@@ -1431,10 +1738,13 @@ class VentanaPrincipal(QMainWindow):
                 if self.repositorio.guardar():
                     self._actualizar_lista_categorias()
                     self.barra_estado.showMessage(f"Categoría '{categoria}' creada correctamente", 3000)
+                    show_success_toast(f"📁 Categoría '{categoria}' creada")
                 else:
                     QMessageBox.warning(self, "Error", "No se pudo guardar la nueva categoría.")
+                    show_error_toast("❌ Error al guardar la categoría")
             else:
                 QMessageBox.warning(self, "Error", "La categoría ya existe o el nombre no es válido.")
+                show_warning_toast("⚠️ La categoría ya existe")
     
     def _renombrar_categoria(self) -> None:
         """Renombra la categoría seleccionada."""
@@ -1531,15 +1841,20 @@ class VentanaPrincipal(QMainWindow):
                         if self.repositorio.guardar():
                             self._cargar_datos_iniciales()
                             self.barra_estado.showMessage("Datos importados correctamente", 3000)
+                            show_success_toast("📥 Datos importados correctamente")
                         else:
                             QMessageBox.warning(self, "Error", "No se pudieron guardar los datos importados.")
+                            show_error_toast("❌ Error al guardar datos importados")
                     else:
                         QMessageBox.warning(self, "Error", "No se pudieron importar los datos.")
+                        show_error_toast("❌ Error al importar los datos")
                 else:
                     QMessageBox.warning(self, "Error", "El archivo no tiene un formato válido.")
+                    show_warning_toast("⚠️ Formato de archivo inválido")
             except Exception as e:
                 logger.error(f"Error al importar: {e}")
                 QMessageBox.warning(self, "Error", f"Error al importar archivo: {e}")
+                show_error_toast("❌ Error al importar archivo")
     
     def _exportar_json(self) -> None:
         """Exporta datos a un archivo JSON."""
@@ -1557,11 +1872,14 @@ class VentanaPrincipal(QMainWindow):
                 
                 if guardar_json(datos, Path(archivo)):
                     self.barra_estado.showMessage(f"Datos exportados a {archivo}", 3000)
+                    show_success_toast("📤 Datos exportados correctamente")
                 else:
                     QMessageBox.warning(self, "Error", "No se pudo exportar el archivo.")
+                    show_error_toast("❌ Error al exportar archivo")
             except Exception as e:
                 logger.error(f"Error al exportar: {e}")
                 QMessageBox.warning(self, "Error", f"Error al exportar archivo: {e}")
+                show_error_toast("❌ Error al exportar archivo")
     
     def _refrescar_datos(self) -> None:
         """Refresca los datos y la vista de forma completa."""
@@ -1581,7 +1899,7 @@ class VentanaPrincipal(QMainWindow):
             self.repositorio.cargar()
             
             # Actualizar todas las vistas
-            self._actualizar_categorias()
+            self._actualizar_lista_categorias()
             
             # Restaurar selección de categoría si existe
             if categoria_seleccionada and hasattr(self, 'lista_categorias'):
@@ -2175,3 +2493,113 @@ class VentanaPrincipal(QMainWindow):
                     margin: 2px;
                 }}
             """)
+    
+    # ⭐ NUEVAS FUNCIONES PARA MANEJAR FAVORITOS
+    
+    def _abrir_enlace_por_id(self, enlace_id: str):
+        """Abre un enlace por su ID"""
+        try:
+            enlaces = self.repositorio.obtener_enlaces()
+            for enlace in enlaces:
+                if enlace.get('id') == enlace_id:
+                    url = enlace.get('url', '')
+                    if url:
+                        abrir_url(url)
+                        show_success_toast(f"📱 Abriendo: {enlace.get('titulo', 'Enlace')}")
+                        logger.info(f"Enlace abierto desde favoritos: {url}")
+                    break
+        except Exception as e:
+            logger.error(f"Error abriendo enlace: {e}")
+            show_error_toast("❌ Error al abrir enlace")
+    
+    def _seleccionar_enlace_por_id(self, enlace_id: str):
+        """Selecciona un enlace en la tabla por su ID"""
+        try:
+            # Buscar el enlace en el modelo de tabla
+            for row in range(self.modelo_tabla.rowCount()):
+                enlace = self.modelo_tabla._enlaces[row]
+                if enlace.get('id') == enlace_id:
+                    # Seleccionar la fila en la tabla
+                    index = self.modelo_tabla.index(row, 0)
+                    self.tabla_enlaces.selectRow(row)
+                    self.tabla_enlaces.scrollTo(index)
+                    
+                    # Cambiar a la pestaña de enlaces si no está activa
+                    if hasattr(self, 'tabs_principales'):
+                        self.tabs_principales.setCurrentIndex(0)  # Pestaña de enlaces
+                    
+                    logger.info(f"Enlace seleccionado desde favoritos: {enlace.get('titulo')}")
+                    break
+        except Exception as e:
+            logger.error(f"Error seleccionando enlace: {e}")
+    
+    def _on_favorito_eliminado(self, enlace_id: str):
+        """Maneja cuando se elimina un favorito"""
+        try:
+            # Refrescar la tabla para actualizar la columna de favoritos
+            self._actualizar_tabla_enlaces()
+            show_success_toast("⭐ Favorito eliminado")
+            logger.info(f"Favorito eliminado: {enlace_id}")
+        except Exception as e:
+            logger.error(f"Error procesando eliminación de favorito: {e}")
+    
+    def _alternar_favorito_seleccionado(self):
+        """Alterna el estado de favorito del enlace seleccionado"""
+        try:
+            enlace_seleccionado = self._obtener_enlace_seleccionado()
+            if not enlace_seleccionado:
+                show_warning_toast("⚠️ Selecciona un enlace primero")
+                return
+            
+            enlace_id = enlace_seleccionado.get('id')
+            if not enlace_id:
+                show_error_toast("❌ Error: enlace sin ID")
+                return
+            
+            # Alternar estado de favorito
+            nuevo_estado = self.repositorio.alternar_favorito(enlace_id)
+            if nuevo_estado is not None:
+                self.repositorio.guardar()
+                
+                # Refrescar vistas
+                self._actualizar_tabla_enlaces()
+                if hasattr(self, 'widget_favoritos'):
+                    self.widget_favoritos.refrescar_favoritos()
+                
+                # Mostrar feedback
+                if nuevo_estado:
+                    show_success_toast(f"⭐ {enlace_seleccionado.get('titulo', 'Enlace')} marcado como favorito")
+                else:
+                    show_info_toast(f"☆ {enlace_seleccionado.get('titulo', 'Enlace')} desmarcado como favorito")
+                
+                logger.info(f"Favorito alternado: {enlace_id} -> {nuevo_estado}")
+            else:
+                show_error_toast("❌ Error al cambiar estado de favorito")
+                
+        except Exception as e:
+            logger.error(f"Error alternando favorito: {e}")
+            show_error_toast("❌ Error al cambiar favorito")
+    
+    def _mostrar_solo_favoritos(self):
+        """Filtra para mostrar solo enlaces favoritos"""
+        try:
+            favoritos = self.repositorio.obtener_favoritos()
+            
+            if not favoritos:
+                show_info_toast("ℹ️ No hay favoritos para mostrar")
+                return
+            
+            # Aplicar filtro de favoritos
+            self.modelo_tabla.establecer_enlaces(favoritos)
+            self._actualizar_informacion()
+            
+            # Actualizar estado de UI
+            self.categoria_filtro_actual = "⭐ Favoritos"
+            self._actualizar_lista_categorias()
+            
+            show_info_toast(f"⭐ Mostrando {len(favoritos)} favoritos")
+            logger.info(f"Filtro de favoritos aplicado: {len(favoritos)} enlaces")
+            
+        except Exception as e:
+            logger.error(f"Error mostrando favoritos: {e}")
+            show_error_toast("❌ Error al filtrar favoritos")

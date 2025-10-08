@@ -5,7 +5,8 @@
 ## ✨ Características Principales
 
 - **🎨 Tema Oscuro Profesional**: Interfaz moderna optimizada para largas sesiones de trabajo
-- **🔍 Búsqueda Inteligente**: Búsqueda case-insensitive con soporte para fuzzy matching en todas las secciones
+- **� Sistema de Notificaciones Toast**: Feedback visual inmediato con diseño Fluent moderno
+- **�🔍 Búsqueda Inteligente**: Búsqueda case-insensitive con soporte para fuzzy matching en todas las secciones
 - **📁 Gestión de Categorías**: Panel lateral intuitivo para organizar enlaces
 - **🏷️ Sistema de Tags**: Etiquetado flexible con filtros de un clic
 - **📝 Editor de Notas**: Sistema completo de notas con auto-guardado y búsqueda
@@ -95,6 +96,39 @@ Una funcionalidad completamente nueva que permite tomar, organizar y gestionar n
 ✅ **Integración completa** con gestión de enlaces  
 
 👉 **[Ver documentación completa del sistema de notas →](NOTAS.md)**
+
+## 🔔 Sistema de Notificaciones Toast
+
+### ¿Qué son los Toasts?
+Un sistema moderno de notificaciones visuales que proporciona **feedback inmediato** al usuario mediante notificaciones elegantes y no intrusivas que aparecen temporalmente en la pantalla.
+
+### ✨ Características del Sistema Toast
+- **🎨 Diseño Microsoft Fluent**: Notificaciones con efectos de blur y sombras realistas
+- **🚦 4 Tipos de Notificación**: Éxito, Error, Advertencia e Información con colores distintivos
+- **⚡ Animaciones Suaves**: Entrada y salida con easing curves profesionales
+- **⏱️ Auto-hide Inteligente**: Duración personalizable según el tipo de mensaje
+- **📍 Posicionamiento Flexible**: Top-right, top-left, bottom-right, etc.
+- **🔄 Sistema de Cola**: Gestión automática de múltiples notificaciones simultáneas
+
+### 🎯 Integración en la Aplicación
+Los toasts aparecen automáticamente para todas las acciones importantes:
+
+```
+💾 Datos guardados correctamente          ← Al guardar
+🔗 Enlace 'GitHub' creado                ← Al crear enlaces  
+🗑️ Enlace 'Tutorial' eliminado          ← Al eliminar
+📥 Datos importados correctamente        ← Al importar JSON
+⚠️ URL duplicada detectada              ← Validaciones
+❌ Error al conectar con servidor        ← Errores críticos
+```
+
+### 🧪 Demo Interactivo
+```bash
+# Probar todas las funcionalidades del sistema
+python demo_toasts.py
+```
+
+👉 **[Ver documentación técnica completa →](docs/TOAST_SYSTEM.md)**
 
 ## 🎨 Interfaz y Diseño
 

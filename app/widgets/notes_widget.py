@@ -23,7 +23,9 @@ from ..utils.io import cargar_json, guardar_json
 from ..config import (
     obtener_config_notas, obtener_color_scheme, obtener_typography, 
     obtener_spacing, obtener_elevation, get_color, get_font_size, 
-    get_spacing, get_border_radius
+    get_spacing, get_border_radius,
+    obtener_fluent_colors, obtener_fluent_typography, obtener_fluent_spacing,
+    obtener_fluent_elevation, obtener_fluent_motion
 )
 
 logger = logging.getLogger(__name__)
@@ -179,165 +181,196 @@ class NotesWidget(QWidget):
         splitter.addWidget(widget_editor)
     
     def _aplicar_estilos(self):
-        """Aplica estilos modernos mejorados usando el sistema de diseño"""
-        colors = obtener_color_scheme()
-        typography = obtener_typography()
-        spacing = obtener_spacing()
-        elevation = obtener_elevation()
+        """Aplica estilos Fluent Design System al widget de notas (compatible PyQt6)"""
+        colors = obtener_fluent_colors()
+        typography = obtener_fluent_typography()
+        spacing = obtener_fluent_spacing()
+        elevation = obtener_fluent_elevation()
         config_notas = obtener_config_notas()
         
         self.setStyleSheet(f"""
+            /* =============================================================================
+               FLUENT DESIGN SYSTEM - NOTES WIDGET
+               Microsoft Fluent Design compatible con PyQt6
+            ============================================================================= */
+            
             /* Widget principal */
             QWidget {{
-                background-color: {colors['surface']};
-                color: {colors['on_surface']};
+                background-color: {colors['surface_secondary']};
+                color: {colors['text_primary']};
                 font-family: {typography['font_family_primary']};
+                border-radius: {elevation['border_radius']['large']}px;
+                margin: {spacing['xs']}px;
             }}
             
-            /* Campo de entrada del título */
+            /* Campo de entrada del título con Fluent style */
             QLineEdit {{
-                background-color: {colors['surface_elevated']};
-                border: 1px solid {colors['outline']};
-                border-radius: {elevation['border_radius']['small']}px;
-                padding: {spacing['sm']}px {spacing['md']}px;
-                color: {colors['on_surface']};
-                font-size: {typography['font_sizes']['body']}px;
-                font-weight: {typography['font_weights']['medium']};
-                min-height: 32px;
+                background-color: {colors['surface_secondary']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['md']}px {spacing['lg']}px;
+                color: {colors['text_primary']};
+                font-size: {typography['font_sizes']['subtitle']}px;
+                font-weight: {typography['font_weights']['semibold']};
+                min-height: 40px;
             }}
             
             QLineEdit:focus {{
-                border: 2px solid {colors['primary']};
-                background-color: {colors['surface']};
+                border: 2px solid {colors['stroke_focus']};
+                background-color: {colors['surface_primary']};
+                outline: none;
             }}
             
             QLineEdit:hover {{
-                border-color: {colors['primary_variant']};
+                border-color: {colors['stroke_accent']};
+                background-color: {colors['hover_light']};
             }}
             
             /* Editor de texto principal */
             QTextEdit {{
                 background-color: {colors['surface_elevated']};
-                border: 1px solid {colors['outline']};
-                border-radius: {elevation['border_radius']['medium']}px;
-                padding: {spacing['md']}px;
-                color: {colors['on_surface']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['large']}px;
+                padding: {spacing['lg']}px;
+                color: {colors['text_primary']};
                 font-family: {config_notas['editor_font_family']};
                 font-size: {config_notas['editor_font_size']}px;
                 line-height: {config_notas['editor_line_height']};
-                selection-background-color: {colors['primary']};
-                selection-color: {colors['on_primary']};
+                selection-background-color: {colors['selection_strong']};
+                selection-color: {colors['text_on_accent']};
             }}
             
             QTextEdit:focus {{
-                border: 2px solid {colors['primary']};
-                background-color: {colors['surface']};
+                border: 2px solid {colors['stroke_focus']};
+                background-color: {colors['surface_primary']};
             }}
             
-            /* Lista de notas */
+            QTextEdit:hover {{
+                border-color: {colors['stroke_accent']};
+            }}
+            
+            /* Lista de notas con Fluent Design */
             QListWidget {{
                 background-color: {colors['surface_elevated']};
-                border: 1px solid {colors['outline']};
+                border: 1px solid {colors['stroke_primary']};
                 border-radius: {elevation['border_radius']['medium']}px;
-                padding: {spacing['xs']}px;
-                color: {colors['on_surface']};
+                padding: {spacing['sm']}px;
+                color: {colors['text_primary']};
                 font-size: {typography['font_sizes']['body']}px;
             }}
             
             QListWidget::item {{
-                padding: {spacing['md']}px {spacing['sm']}px;
-                border-radius: {elevation['border_radius']['small']}px;
+                background: transparent;
+                color: {colors['text_primary']};
+                padding: {spacing['lg']}px {spacing['md']}px;
+                border-radius: {elevation['border_radius']['medium']}px;
                 margin: {spacing['xs']}px;
                 border: 1px solid transparent;
             }}
             
             QListWidget::item:selected {{
-                background-color: {colors['primary']};
-                color: {colors['on_primary']};
-                font-weight: {typography['font_weights']['medium']};
+                background-color: {colors['selection_strong']};
+                color: {colors['text_on_accent']};
+                border-color: {colors['stroke_accent']};
+                font-weight: {typography['font_weights']['semibold']};
             }}
             
             QListWidget::item:hover:!selected {{
-                background-color: {colors['surface_variant']};
-                border-color: {colors['outline']};
+                background-color: {colors['hover_light']};
+                border-color: {colors['stroke_secondary']};
+                color: {colors['primary']};
             }}
             
-            /* Botones mejorados */
+            /* Botones Fluent */
             QPushButton {{
-                background-color: {colors['surface_elevated']};
-                border: 1px solid {colors['outline']};
-                border-radius: {elevation['border_radius']['small']}px;
-                padding: {spacing['sm']}px {spacing['lg']}px;
-                color: {colors['on_surface']};
+                background-color: {colors['surface_secondary']};
+                border: 1px solid {colors['stroke_primary']};
+                border-radius: {elevation['border_radius']['medium']}px;
+                padding: {spacing['sm']}px {spacing['xl']}px;
+                color: {colors['text_primary']};
                 font-size: {typography['font_sizes']['body']}px;
-                font-weight: {typography['font_weights']['medium']};
-                min-height: 36px;
+                font-weight: {typography['font_weights']['semibold']};
+                min-height: 32px;
             }}
             
             QPushButton:hover {{
-                background-color: {colors['primary_variant']};
-                color: {colors['on_primary']};
-                border-color: {colors['primary']};
+                background-color: {colors['hover_light']};
+                color: {colors['primary']};
+                border-color: {colors['stroke_accent']};
             }}
             
             QPushButton:pressed {{
-                background-color: {colors['primary_dark']};
-                color: {colors['on_primary']};
+                background-color: {colors['hover_medium']};
+                color: {colors['primary_dark']};
             }}
             
-            /* Botón primario especial */
+            QPushButton:focus {{
+                border: 2px solid {colors['stroke_focus']};
+                outline: none;
+            }}
+            
+            /* Botón primario con Microsoft Blue */
             QPushButton#btn_nueva_nota {{
                 background-color: {colors['primary']};
-                color: {colors['on_primary']};
-                border: none;
+                color: {colors['text_on_accent']};
+                border: 1px solid {colors['primary']};
                 font-weight: {typography['font_weights']['semibold']};
             }}
             
             QPushButton#btn_nueva_nota:hover {{
-                background-color: {colors['primary_variant']};
+                background-color: {colors['primary_light']};
+                border-color: {colors['primary_light']};
             }}
             
-            /* Labels mejorados */
+            QPushButton#btn_nueva_nota:pressed {{
+                background-color: {colors['primary_dark']};
+                border-color: {colors['primary_dark']};
+            }}
+            
+            /* Labels con tipografía Fluent */
             QLabel {{
-                color: {colors['on_surface']};
+                color: {colors['text_primary']};
                 font-size: {typography['font_sizes']['body']}px;
+                font-family: {typography['font_family_primary']};
             }}
             
             QLabel#label_titulo {{
                 font-size: {typography['font_sizes']['title']}px;
                 font-weight: {typography['font_weights']['semibold']};
                 color: {colors['primary']};
-                margin-bottom: {spacing['sm']}px;
+                margin-bottom: {spacing['md']}px;
             }}
             
-            /* Splitter mejorado */
+            /* Splitter Fluent */
             QSplitter::handle {{
-                background-color: {colors['outline']};
+                background-color: {colors['stroke_secondary']};
                 width: 2px;
-                margin: {spacing['xs']}px 0;
+                margin: {spacing['sm']}px 0;
+                border-radius: 1px;
             }}
             
             QSplitter::handle:hover {{
-                background-color: {colors['primary_variant']};
+                background-color: {colors['primary_light']};
+                width: 3px;
             }}
             
-            /* Scrollbar personalizado */
+            /* Scrollbars Fluent */
             QScrollBar:vertical {{
-                background-color: {colors['surface_variant']};
-                width: 12px;
-                border-radius: 6px;
+                background-color: {colors['surface_tertiary']};
+                width: 16px;
+                border-radius: 8px;
                 margin: 0;
             }}
             
             QScrollBar::handle:vertical {{
-                background-color: {colors['outline']};
-                border-radius: 6px;
+                background-color: {colors['stroke_primary']};
+                border-radius: 8px;
                 min-height: 20px;
                 margin: 2px;
             }}
             
             QScrollBar::handle:vertical:hover {{
-                background-color: {colors['primary_variant']};
+                background-color: {colors['primary_light']};
             }}
             
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
