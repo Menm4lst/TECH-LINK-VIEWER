@@ -19,6 +19,11 @@ TABLA_CONFIG = {
     'columna_categoria': 120,
     'columna_tags': 200,
     
+    # Colores de selección
+    'color_seleccion': '#8A2BE2',  # Violeta para elementos seleccionados
+    'color_seleccion_texto': '#FFFFFF',  # Texto blanco sobre violeta
+    'color_hover': '#9932CC',  # Violeta más claro para hover
+    
     # Comportamiento
     'word_wrap': False,  # Evitar wrap de texto que aumenta altura
     'resize_to_contents': True,  # Redimensionar columnas automáticamente

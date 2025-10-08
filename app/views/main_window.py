@@ -614,6 +614,26 @@ class VentanaPrincipal(QMainWindow):
         self.tabla_enlaces.setColumnWidth(3, config_tabla['columna_tags'])     # Tags
         # La columna 4 (Fecha) se ajustará automáticamente
         
+        # Aplicar estilo de selección violeta
+        self.tabla_enlaces.setStyleSheet(f"""
+            QTableView {{
+                selection-background-color: {config_tabla['color_seleccion']};
+                selection-color: {config_tabla['color_seleccion_texto']};
+                alternate-background-color: #2b2b2b;
+                background-color: #1e1e1e;
+                gridline-color: #404040;
+                color: #ffffff;
+            }}
+            QTableView::item:selected {{
+                background-color: {config_tabla['color_seleccion']};
+                color: {config_tabla['color_seleccion_texto']};
+            }}
+            QTableView::item:hover {{
+                background-color: {config_tabla['color_hover']};
+                color: {config_tabla['color_seleccion_texto']};
+            }}
+        """)
+        
         layout_enlaces.addWidget(self.tabla_enlaces)
         
         splitter.addWidget(widget_enlaces)
