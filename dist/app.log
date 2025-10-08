@@ -1,0 +1,21 @@
+2025-10-06 10:43:21,630 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-06 10:43:22,109 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\dist\data\links.json
+2025-10-06 10:43:22,110 - app.utils.io - WARNING - Archivo no existe: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\dist\data\links.json
+2025-10-06 10:43:22,110 - app.models.repository - WARNING - Datos no válidos o no existen, creando datos por defecto
+2025-10-06 10:43:22,111 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\dist\data\links.json
+2025-10-06 10:43:22,113 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-06 10:43:23,451 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:43:23,451 - app.widgets.notes_widget - INFO - Cargadas 1 notas
+2025-10-06 10:43:23,452 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-06 10:43:23,472 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-06 10:43:23,590 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-06 10:44:39,487 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:44:49,017 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:44:49,022 - app.widgets.notes_widget - INFO - Nueva nota creada: PROBANDOOOOO
+2025-10-06 10:44:52,018 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:45:05,792 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:45:05,793 - app.views.main_window - INFO - Nota guardada: nota_20251006_104449
+2025-10-06 10:45:05,794 - app.widgets.notes_widget - INFO - Nota guardada manualmente: PROBANDOOOOO
+2025-10-06 10:45:07,363 - app.utils.io - INFO - JSON guardado correctamente en: data\notas.json
+2025-10-06 10:45:08,438 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\dist\data\links.json
+2025-10-06 10:45:08,438 - app.views.main_window - INFO - Aplicación cerrada correctamente

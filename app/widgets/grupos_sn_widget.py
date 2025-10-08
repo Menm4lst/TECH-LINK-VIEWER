@@ -16,6 +16,10 @@ from PyQt6.QtGui import QFont
 
 from app.theme.colors import Colors
 from app.theme.fonts import Fonts
+from app.config import (
+    obtener_color_scheme, obtener_typography, obtener_spacing, 
+    obtener_elevation, get_color, get_font_size, get_spacing, get_border_radius
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,19 +38,33 @@ class GruposSNWidget(QWidget):
         self._conectar_senales()
         
     def _setup_ui(self):
-        """Configura la interfaz de usuario."""
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 5, 10, 10)  # Reducir márgenes
-        layout.setSpacing(8)  # Reducir espaciado
+        """Configura la interfaz de usuario con estilo moderno."""
+        colors = obtener_color_scheme()
+        typography = obtener_typography()
+        spacing = obtener_spacing()
+        elevation = obtener_elevation()
         
-        # Título más compacto
-        titulo = QLabel("📋 Grupos de Service Now")
-        titulo.setFont(Fonts.get_header_font())  # Usar header en lugar de title
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(
+            get_spacing('sm'), 
+            get_spacing('xs'), 
+            get_spacing('sm'), 
+            get_spacing('sm')
+        )
+        layout.setSpacing(get_spacing('xs'))
+        
+        # Título moderno y compacto
+        titulo = QLabel("📋 Grupos Service Now")
+        titulo.setFont(QFont(
+            typography['font_family_primary'], 
+            typography['font_sizes']['title'], 
+            typography['font_weights']['semibold']
+        ))
         titulo.setStyleSheet(f"""
-            color: {Colors.ACCENT_NEO};
-            font-weight: bold;
-            margin: 2px 0px;
-            padding: 2px 0px;
+            color: {colors['primary']};
+            margin: 0px;
+            padding: {get_spacing('xs')}px 0px;
+            max-height: {get_font_size('title') + 8}px;
         """)
         layout.addWidget(titulo)
         

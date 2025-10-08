@@ -1,19 +1,12 @@
 {
   "bienvenida_20251003_145837": {
     "titulo": "🎉 Bienvenido al Sistema de Notas",
-    "contenido": "¡Hola! Bienvenido al sistema de notas integrado de TECH LINK VIEWER 4.0.\n\n🚀 CARACTERÍSTICAS PRINCIPALES:\n• Auto-guardado inteligente cada 3 segundos\n• Búsqueda instantánea en todas tus notas\n• Interfaz terminal con tema oscuro\n• Menú contextual con opciones avanzadas\n\n⌨️ ATAJOS ÚTILES:\n• Ctrl+N: Nueva nota\n• Ctrl+S: Guardar nota\n• Ctrl+F: Buscar en notas\n\n💡 CONSEJOS:\n• Usa títulos descriptivos para encontrar notas fácilmente\n• El sistema guarda automáticamente mientras escribes\n• Puedes tener múltiples notas abiertas\n• Las notas se sincronizan con tus enlaces\n\n📝 CASOS DE USO:\n• Documentar APIs y configuraciones\n• Guardar snippets de código\n• Tomar notas de reuniones\n• Planificar proyectos\n• Recordatorios y tareas\n\n¡Comienza a escribir y organiza tu trabajo de manera eficiente!\n\n---\nDesarrollado por Antware con ❤️ y ☕",
+    "contenido": "¡Hola! Bienvenido al sistema de notas integrado de TECH LINK VIEWER 4.0.\n\n🚀 CARACTERÍSTICAS PRINCIPALES:\n• Auto-guardánea en todas tus notas\n• Interfaz terminal con tema oscuado inteligente cada 3 segundos\n• Búsquedro\n• Menú cona instanttextual con opciones avanzadas\n\n⌨️ ATAJOS ÚTILES:\n• Ctrl+N: Nueva nota\n• Ctrl+S: Guardar nota\n• Ctrl+F: Buscar en notas\n\n💡 CONSEJOS:\n• Usa títulos descriptivos para encontrar notas fácilmente\n• El sistema guarda automáticamente mientras escribes\n• Puedes tener múltiples notas abiertas\n• Las notas se sincronizan con tus enlaces\n\n📝 CASOS DE USO:\n• Documentar APIs y configuraciones\n• Guardar snippets de código\n• Tomar notas de reuniones\n• Planificar proyectos\n• Recordatorios y tareas\n\n¡Comienza a escribir y organiza tu trabajo de manera eficiente!\n\n---\nDesarrollado por Antware con ❤️ y ☕",
     "fecha_creacion": "2025-10-03T14:58:37.695126",
-    "fecha_modificacion": "2025-10-03T14:58:50.810532",
+    "fecha_modificacion": "2025-10-08T14:26:18.931624",
     "tags": [
       "bienvenida",
       "tutorial"
     ]
-  },
-  "nota_20251003_145932": {
-    "titulo": "APPLICACIONES",
-    "contenido": "DDDDD",
-    "fecha_creacion": "2025-10-03T14:59:32.853444",
-    "fecha_modificacion": "2025-10-03T15:05:02.982856",
-    "tags": []
   }
 }

@@ -205,3 +205,67 @@
 2025-10-08 07:59:49,219 - app.ui_main - INFO - Aplicación iniciada correctamente
 2025-10-08 08:00:21,768 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
 2025-10-08 08:00:21,768 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 08:03:56,296 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 08:03:56,598 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:03:56,600 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:03:56,601 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 08:03:56,602 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-08 08:03:57,629 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 08:03:57,630 - app.widgets.notes_widget - INFO - Cargadas 2 notas
+2025-10-08 08:03:57,631 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 08:03:57,685 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 08:03:57,891 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 08:04:10,041 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:04:10,041 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 08:12:23,013 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 08:12:23,390 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:12:23,392 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:12:23,392 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 08:12:23,393 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-08 08:12:24,186 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 08:12:24,969 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 08:12:24,970 - app.widgets.notes_widget - INFO - Cargadas 2 notas
+2025-10-08 08:12:24,970 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 08:12:25,035 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 08:12:25,208 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 08:13:43,678 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:13:43,679 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 08:13:52,492 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 08:13:52,866 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:13:52,868 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:13:52,868 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 08:13:52,869 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-08 08:13:53,586 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 08:13:54,572 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 08:13:54,573 - app.widgets.notes_widget - INFO - Cargadas 2 notas
+2025-10-08 08:13:54,574 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 08:13:54,655 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 08:13:54,841 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 08:14:05,637 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 08:14:05,637 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 09:04:43,016 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 09:04:43,368 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 09:04:43,376 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 09:04:43,377 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 09:04:43,377 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-08 09:04:44,035 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 09:04:46,348 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 09:04:46,348 - app.widgets.notes_widget - INFO - Cargadas 2 notas
+2025-10-08 09:04:46,349 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 09:04:46,375 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 09:04:47,326 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 14:15:14,438 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 14:15:14,439 - app.views.main_window - INFO - Aplicación cerrada correctamente
+2025-10-08 14:28:03,977 - app.ui_main - INFO - Iniciando aplicación TLV 4.0
+2025-10-08 14:28:04,452 - app.ui_main - INFO - Usando archivo de datos: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 14:28:04,454 - app.utils.io - INFO - JSON cargado correctamente desde: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 14:28:04,455 - app.utils.io - INFO - Estructura JSON válida
+2025-10-08 14:28:04,456 - app.views.main_window - WARNING - No se encontró la imagen de fondo en: Images\fondo.jpg
+2025-10-08 14:28:04,879 - app.views.main_window - INFO - Panel de categorías configurado con fondo sólido limpio
+2025-10-08 14:28:05,598 - app.utils.io - INFO - JSON cargado correctamente desde: data\notas.json
+2025-10-08 14:28:05,599 - app.widgets.notes_widget - INFO - Cargadas 2 notas
+2025-10-08 14:28:05,599 - app.widgets.notes_widget - INFO - Widget de notas inicializado
+2025-10-08 14:28:05,633 - app.views.main_window - INFO - Ventana principal inicializada
+2025-10-08 14:28:05,761 - app.ui_main - INFO - Aplicación iniciada correctamente
+2025-10-08 14:30:50,306 - app.utils.io - INFO - JSON guardado correctamente en: C:\Users\Antware\OneDrive\Desktop\PROYECTOS DEV\TLV_4.0\APP TLV COMPILADA\data\links.json
+2025-10-08 14:30:50,307 - app.views.main_window - INFO - Aplicación cerrada correctamente

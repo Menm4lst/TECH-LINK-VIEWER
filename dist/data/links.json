@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "categorias": [
+    "Personal",
+    "Trabajo"
+  ],
+  "links": [
+    {
+      "id": "7d656b7a-fed6-4d47-9083-594ff012643b",
+      "titulo": "Google",
+      "url": "https://www.google.com",
+      "categoria": "Personal",
+      "tags": [
+        "google",
+        "buscador"
+      ],
+      "creado_en": "2025-10-06T10:43:22.110733",
+      "actualizado_en": "2025-10-06T10:43:22.110733"
+    },
+    {
+      "id": "ceaf8169-a722-4050-bf6f-0a9b87c6e6dc",
+      "titulo": "Trabajo",
+      "url": "https://www.trabajo.com",
+      "categoria": "Trabajo",
+      "tags": [
+        "trabajo"
+      ],
+      "creado_en": "2025-10-06T10:43:22.110733",
+      "actualizado_en": "2025-10-06T10:43:22.110733"
+    }
+  ]
+}

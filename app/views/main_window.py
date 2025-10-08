@@ -26,7 +26,11 @@ from ..widgets import TitleBar, NotesWidget, GruposSNWidget
 from ..widgets.about_dialog import AboutDialog
 from ..delegates import TagDelegate
 from .link_dialog import DialogoEnlace
-from ..config import obtener_config_tabla, obtener_config_app
+from ..config import (
+    obtener_config_tabla, obtener_config_app, obtener_color_scheme, 
+    obtener_typography, obtener_spacing, obtener_elevation,
+    get_color, get_font_size, get_spacing, get_border_radius, get_shadow
+)
 
 
 logger = logging.getLogger(__name__)
@@ -152,8 +156,167 @@ class VentanaPrincipal(QMainWindow):
             """
             logger.warning(f"No se encontró la imagen de fondo en: {fondo_path}")
         
-        # Aplicar el estilo a la ventana principal
-        self.setStyleSheet(stylesheet)
+        # Aplicar el estilo moderno mejorado
+        self.setStyleSheet(self._generar_stylesheet_moderno())
+
+    def _generar_stylesheet_moderno(self) -> str:
+        """Genera el stylesheet moderno con el nuevo sistema de diseño"""
+        colors = obtener_color_scheme()
+        typography = obtener_typography()
+        spacing = obtener_spacing()
+        elevation = obtener_elevation()
+        
+        return f"""
+        /* Estilo base de la aplicación */
+        QMainWindow {{
+            background-color: {colors['surface']};
+            color: {colors['on_surface']};
+            font-family: {typography['font_family_primary']};
+            font-size: {typography['font_sizes']['body']}px;
+        }}
+        
+        /* Widget central con elevación */
+        QWidget#central_widget {{
+            background-color: {colors['surface']};
+            border-radius: {elevation['border_radius']['medium']}px;
+            margin: {spacing['sm']}px;
+        }}
+        
+        /* Estilo mejorado para tabs */
+        QTabWidget::pane {{
+            border: 1px solid {colors['outline']};
+            background-color: {colors['surface_variant']};
+            border-radius: {elevation['border_radius']['medium']}px;
+            margin: {spacing['xs']}px;
+        }}
+        
+        QTabBar::tab {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['on_surface_variant']};
+            padding: {spacing['sm']}px {spacing['lg']}px;
+            margin-right: {spacing['xs']}px;
+            border-top-left-radius: {elevation['border_radius']['small']}px;
+            border-top-right-radius: {elevation['border_radius']['small']}px;
+            font-weight: {typography['font_weights']['medium']};
+            min-width: 120px;
+        }}
+        
+        QTabBar::tab:selected {{
+            background-color: {colors['primary']};
+            color: {colors['on_primary']};
+            font-weight: {typography['font_weights']['semibold']};
+        }}
+        
+        QTabBar::tab:hover:!selected {{
+            background-color: {colors['primary_variant']};
+            color: {colors['on_primary']};
+        }}
+        
+        /* Botones mejorados */
+        QPushButton {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['on_surface']};
+            border: 1px solid {colors['outline']};
+            border-radius: {elevation['border_radius']['small']}px;
+            padding: {spacing['sm']}px {spacing['md']}px;
+            font-weight: {typography['font_weights']['medium']};
+            min-height: 32px;
+        }}
+        
+        QPushButton:hover {{
+            background-color: {colors['primary_variant']};
+            color: {colors['on_primary']};
+            border-color: {colors['primary']};
+        }}
+        
+        QPushButton:pressed {{
+            background-color: {colors['primary_dark']};
+            color: {colors['on_primary']};
+        }}
+        
+        /* Campos de entrada mejorados */
+        QLineEdit, QTextEdit, QComboBox {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['on_surface']};
+            border: 1px solid {colors['outline']};
+            border-radius: {elevation['border_radius']['small']}px;
+            padding: {spacing['sm']}px;
+            font-size: {typography['font_sizes']['body']}px;
+        }}
+        
+        QLineEdit:focus, QTextEdit:focus, QComboBox:focus {{
+            border: 2px solid {colors['primary']};
+            background-color: {colors['surface']};
+        }}
+        
+        /* Lista mejorada */
+        QListWidget {{
+            background-color: {colors['surface_elevated']};
+            color: {colors['on_surface']};
+            border: 1px solid {colors['outline']};
+            border-radius: {elevation['border_radius']['small']}px;
+            padding: {spacing['xs']}px;
+        }}
+        
+        QListWidget::item {{
+            padding: {spacing['sm']}px;
+            border-radius: {elevation['border_radius']['small']}px;
+            margin: 1px;
+        }}
+        
+        QListWidget::item:selected {{
+            background-color: {colors['primary']};
+            color: {colors['on_primary']};
+        }}
+        
+        QListWidget::item:hover:!selected {{
+            background-color: {colors['surface_variant']};
+        }}
+        
+        /* Scrollbars estilizados */
+        QScrollBar:vertical {{
+            background-color: {colors['surface_variant']};
+            width: 12px;
+            border-radius: 6px;
+            margin: 0;
+        }}
+        
+        QScrollBar::handle:vertical {{
+            background-color: {colors['outline']};
+            border-radius: 6px;
+            min-height: 20px;
+            margin: 2px;
+        }}
+        
+        QScrollBar::handle:vertical:hover {{
+            background-color: {colors['primary_variant']};
+        }}
+        
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
+            height: 0px;
+        }}
+        
+        /* Toolbar mejorado */
+        QToolBar {{
+            background-color: {colors['surface_elevated']};
+            border: none;
+            spacing: {spacing['sm']}px;
+            padding: {spacing['sm']}px;
+        }}
+        
+        QToolBar QToolButton {{
+            background-color: transparent;
+            border: none;
+            border-radius: {elevation['border_radius']['small']}px;
+            padding: {spacing['sm']}px;
+            color: {colors['on_surface']};
+        }}
+        
+        QToolBar QToolButton:hover {{
+            background-color: {colors['primary_variant']};
+            color: {colors['on_primary']};
+        }}
+        """
 
     def _crear_titulo_typewriter(self, layout_padre: QVBoxLayout) -> None:
         """Crea el título con efecto typewriter."""
@@ -614,29 +777,92 @@ class VentanaPrincipal(QMainWindow):
         self.tabla_enlaces.setColumnWidth(3, config_tabla['columna_tags'])     # Tags
         # La columna 4 (Fecha) se ajustará automáticamente
         
-        # Aplicar estilo de selección violeta
-        self.tabla_enlaces.setStyleSheet(f"""
-            QTableView {{
-                selection-background-color: {config_tabla['color_seleccion']};
-                selection-color: {config_tabla['color_seleccion_texto']};
-                alternate-background-color: #2b2b2b;
-                background-color: #1e1e1e;
-                gridline-color: #404040;
-                color: #ffffff;
-            }}
-            QTableView::item:selected {{
-                background-color: {config_tabla['color_seleccion']};
-                color: {config_tabla['color_seleccion_texto']};
-            }}
-            QTableView::item:hover {{
-                background-color: {config_tabla['color_hover']};
-                color: {config_tabla['color_seleccion_texto']};
-            }}
-        """)
+        # Aplicar estilo moderno mejorado para la tabla
+        self._aplicar_estilo_tabla_moderno()
         
         layout_enlaces.addWidget(self.tabla_enlaces)
         
         splitter.addWidget(widget_enlaces)
+
+    def _aplicar_estilo_tabla_moderno(self) -> None:
+        """Aplica un estilo moderno y elegante a la tabla de enlaces"""
+        config_tabla = obtener_config_tabla()
+        colors = obtener_color_scheme()
+        typography = obtener_typography()
+        spacing = obtener_spacing()
+        elevation = obtener_elevation()
+        
+        tabla_style = f"""
+        QTableView {{
+            background-color: {colors['surface_elevated']};
+            alternate-background-color: {colors['surface_variant']};
+            color: {colors['on_surface']};
+            gridline-color: {colors['outline_variant']};
+            border: 1px solid {colors['outline']};
+            border-radius: {elevation['border_radius']['medium']}px;
+            font-size: {typography['font_sizes']['body']}px;
+            font-family: {typography['font_family_primary']};
+            selection-background-color: {config_tabla['color_seleccion']};
+            selection-color: {config_tabla['color_seleccion_texto']};
+        }}
+        
+        QTableView::item {{
+            padding: {spacing['sm']}px;
+            border: none;
+            border-bottom: 1px solid {colors['outline_variant']};
+        }}
+        
+        QTableView::item:selected {{
+            background-color: {config_tabla['color_seleccion']};
+            color: {config_tabla['color_seleccion_texto']};
+            font-weight: {typography['font_weights']['medium']};
+        }}
+        
+        QTableView::item:hover:!selected {{
+            background-color: {config_tabla['color_hover']};
+            color: {config_tabla['color_seleccion_texto']};
+        }}
+        
+        QTableView::item:focus {{
+            outline: 2px solid {colors['primary']};
+            outline-offset: -2px;
+        }}
+        
+        /* Header mejorado */
+        QHeaderView::section {{
+            background-color: {colors['primary']};
+            color: {colors['on_primary']};
+            padding: {spacing['md']}px {spacing['sm']}px;
+            border: none;
+            border-right: 1px solid {colors['primary_dark']};
+            font-weight: {typography['font_weights']['semibold']};
+            font-size: {typography['font_sizes']['caption']}px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        
+        QHeaderView::section:first {{
+            border-top-left-radius: {elevation['border_radius']['medium']}px;
+        }}
+        
+        QHeaderView::section:last {{
+            border-top-right-radius: {elevation['border_radius']['medium']}px;
+            border-right: none;
+        }}
+        
+        QHeaderView::section:hover {{
+            background-color: {colors['primary_variant']};
+        }}
+        
+        /* Corner button */
+        QTableCornerButton::section {{
+            background-color: {colors['primary']};
+            border: none;
+            border-top-left-radius: {elevation['border_radius']['medium']}px;
+        }}
+        """
+        
+        self.tabla_enlaces.setStyleSheet(tabla_style)
     
     def _crear_barra_estado(self) -> None:
         """Crea la barra de estado con información mejorada."""
