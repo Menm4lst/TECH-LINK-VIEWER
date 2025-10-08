@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "categorias": [
+    "Personal",
+    "Trabajo",
+    "HOLA"
+  ],
+  "links": [
+    {
+      "id": "f097e391-3007-4e49-bebb-c04a440258b6",
+      "titulo": "Google",
+      "url": "https://www.google.com",
+      "categoria": "Personal",
+      "tags": [
+        "google",
+        "buscador"
+      ],
+      "creado_en": "2025-10-06T10:01:05.281579",
+      "actualizado_en": "2025-10-06T10:01:05.281579"
+    },
+    {
+      "id": "1e045a65-0008-4270-8f14-58088e836c74",
+      "titulo": "Trabajo",
+      "url": "https://www.trabajo.com",
+      "categoria": "Trabajo",
+      "tags": [
+        "trabajo"
+      ],
+      "creado_en": "2025-10-06T10:01:05.281579",
+      "actualizado_en": "2025-10-06T10:01:05.281579"
+    },
+    {
+      "id": "b214a6fc-bc8d-4cb7-ac38-51fc4af4cd62",
+      "titulo": "HOLA212",
+      "url": "https://WWW.PRUEBA.COM",
+      "categoria": "HOLA",
+      "tags": [],
+      "creado_en": "2025-10-06T10:47:17.789292",
+      "actualizado_en": "2025-10-06T10:47:17.789292"
+    }
+  ]
+}
